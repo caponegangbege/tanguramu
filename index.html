@@ -1,429 +1,209 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>タングラムパズル - 教材準拠版</title>
-    <style>
-        :root {
-            --bg-color: #F3F4F6;
-            --header-bg: #4F46E5;
-            --target-silhouette: #374151; /* シルエット時の色（濃いグレー） */
-            --target-line: #9CA3AF; /* レベル2の線ヒント色 */
-        }
-        body {
-            font-family: sans-serif;
-            background-color: var(--bg-color);
-            margin: 0; padding: 0;
-            user-select: none; -webkit-user-select: none; touch-action: none; overflow: hidden;
-        }
-        .app-container {
-            width: 100%; max-width: 900px; margin: 0 auto; height: 100vh;
-            background-color: #FFFFFF; display: flex; flex-direction: column;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-        }
-        header {
-            background-color: var(--header-bg); color: white; text-align: center;
-            padding: 15px; font-size: 1.5rem; font-weight: bold;
-        }
-        
-        /* --- メニュー画面 --- */
-        #screen-menu { padding: 20px; flex: 1; overflow-y: auto; }
-        .level-section { margin-bottom: 25px; border-bottom: 2px solid #E5E7EB; padding-bottom: 15px; }
-        .level-title { font-size: 1.3rem; font-weight: bold; margin-bottom: 10px; color: #1F2937; }
-        .puzzle-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 15px; }
-        .puzzle-btn {
-            background: white; border: 3px solid #D1D5DB; border-radius: 12px;
-            padding: 15px 10px; font-size: 1.1rem; font-weight: bold; color: #374151;
-            cursor: pointer; display: flex; flex-direction: column; align-items: center; box-shadow: 0 4px 0 #E5E7EB;
-        }
-        .puzzle-btn:active { transform: translateY(4px); box-shadow: none; }
-        .puzzle-btn.lvl1 { border-color: #10B981; }
-        .puzzle-btn.lvl2 { border-color: #F59E0B; }
-        .puzzle-btn.lvl3 { border-color: #EF4444; }
-        .puzzle-btn.lvl4 { border-color: #8B5CF6; }
-        .clear-mark { color: #F59E0B; font-size: 1.5rem; height: 24px; margin-top: 5px; }
-
-        /* --- ゲーム画面 --- */
-        #screen-game { display: flex; flex-direction: column; flex: 1; height: 100%; }
-        .game-header { display: flex; align-items: center; padding: 10px 20px; background: #F9FAFB; border-bottom: 2px solid #E5E7EB; }
-        .back-btn { background: #6B7280; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; }
-        .game-title { flex: 1; text-align: center; font-size: 1.4rem; font-weight: bold; color: #1F2937; margin-right: 70px; }
-        
-        .game-board { flex: 1; position: relative; background: #F3F4F6; display: flex; flex-direction: column; }
-        .drop-area { flex: 1; position: relative; background: white; border-radius: 16px; margin: 15px; box-shadow: inset 0 0 10px rgba(0,0,0,0.05); }
-        
-        /* ピース選択エリア */
-        .pieces-area { 
-            flex: 0 0 250px; background: #E5E7EB; border-top: 4px solid #D1D5DB; 
-            display: flex; flex-wrap: wrap; justify-content: center; align-content: flex-start; 
-            padding: 20px; gap: 20px; overflow-y: auto; 
-        }
-
-        /* --- 図形の基本スタイル --- */
-        .shape-container { position: absolute; box-sizing: border-box; }
-        .shape-container svg { width: 100%; height: 100%; display: block; transition: transform 0.2s; }
-        
-        /* ターゲット（シルエット・枠） */
-        .target { z-index: 1; }
-        .lvl1-target svg path { stroke: #D1D5DB; stroke-width: 2; }
-        .lvl2-target svg path { fill: #E5E7EB !important; stroke: var(--target-line); stroke-width: 3; }
-        .lvl3-target svg path, .lvl4-target svg path { fill: var(--target-silhouette) !important; stroke: var(--target-silhouette); stroke-width: 1; }
-
-        /* ドラッグするピース */
-        .piece-slot { position: relative; }
-        .piece { cursor: grab; z-index: 10; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.4)); touch-action: none; }
-        .piece.dragging { cursor: grabbing; z-index: 100; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5)); }
-
-        .hidden { display: none !important; }
-        
-        /* --- クリア演出 --- */
-        #success-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center;
-            z-index: 1000; opacity: 0; pointer-events: none; transition: 0.3s;
-        }
-        #success-overlay.show { opacity: 1; pointer-events: auto; }
-        .success-text { font-size: 4rem; font-weight: bold; color: #EF4444; animation: pop 0.5s; text-shadow: 2px 2px 0 white, -2px -2px 0 white; }
-        @keyframes pop { 0% { transform: scale(0.5); } 100% { transform: scale(1); } }
-        
-        /* 完成予想図（サムネイル） */
-        #thumbnail-preview {
-            position: absolute; top: 15px; left: 15px; width: 100px; height: 100px;
-            background: white; border: 3px solid #D1D5DB; border-radius: 8px;
-            display: flex; align-items: center; justify-content: center; z-index: 5;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        #thumbnail-preview svg { width: 80%; height: 80%; }
-    </style>
+<meta charset="UTF-8">
+<!-- ピンチズームやダブルタップ拡大を無効化し、誤操作を防ぐ -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>タングラム学習</title>
+<!-- Fabric.jsの読み込み -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
+<style>
+  * {
+    box-sizing: border-box;
+    touch-action: none; /* スワイプによるブラウザの戻る/進むを無効化 */
+    user-select: none; /* テキスト選択無効化 */
+  }
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    overflow: hidden;
+  }
+  /* 位置ズレを完全に防ぐ固定コンテナ */
+  #game-container {
+    position: relative;
+    width: 1024px;
+    height: 768px;
+    background-color: #fff;
+    /* JSで画面サイズに合わせてtransform: scale()を適用します */
+    transform-origin: center center;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  }
+  canvas {
+    display: block;
+  }
+  /* 操作パネル */
+  #controls {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 15px 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  }
+  button {
+    font-size: 24px;
+    padding: 15px 30px;
+    border: 2px solid #555;
+    border-radius: 10px;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  button:active {
+    background-color: #ddd;
+  }
+  button:disabled {
+    opacity: 0.5;
+  }
+  #message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 80px;
+    color: red;
+    font-weight: bold;
+    display: none;
+    pointer-events: none;
+    text-shadow: 2px 2px 5px white;
+  }
+</style>
 </head>
 <body>
-    <div class="app-container">
-        <!-- メニュー画面 -->
-        <div id="screen-menu">
-            <header>タングラムパズル</header>
-            
-            <div class="level-section">
-                <div class="level-title" style="color:#10B981;">レベル 1 (入門編・色ヒントあり)</div>
-                <div class="puzzle-grid" id="grid-lvl1"></div>
-            </div>
-            <div class="level-section">
-                <div class="level-title" style="color:#F59E0B;">レベル 2 (初級編・線ヒントのみ)</div>
-                <div class="puzzle-grid" id="grid-lvl2"></div>
-            </div>
-            <div class="level-section">
-                <div class="level-title" style="color:#EF4444;">レベル 3 (中級編・シルエット)</div>
-                <div class="puzzle-grid" id="grid-lvl3"></div>
-            </div>
-            <div class="level-section">
-                <div class="level-title" style="color:#8B5CF6;">レベル 4 (上級編・シルエット＋回転)</div>
-                <div class="puzzle-grid" id="grid-lvl4"></div>
-            </div>
-        </div>
 
-        <!-- ゲーム画面 -->
-        <div id="screen-game" class="hidden">
-            <div class="game-header">
-                <button class="back-btn" onclick="backToMenu()">もどる</button>
-                <div class="game-title" id="game-title-text">問題タイトル</div>
-            </div>
-            <div class="game-board" id="game-board">
-                <div class="drop-area" id="drop-area">
-                    <div id="thumbnail-preview"></div>
-                </div>
-                <div class="pieces-area" id="pieces-area"></div>
-                
-                <div id="success-overlay">
-                    <div class="success-text">せいかい！</div>
-                </div>
-            </div>
-        </div>
-    </div>
+<div id="game-container">
+  <canvas id="c" width="1024" height="768"></canvas>
+  
+  <div id="controls">
+    <button id="btn-rotate-left">↺ 左に回す</button>
+    <button id="btn-rotate-right">↻ 右に回す</button>
+    <button id="btn-flip">裏返す</button>
+  </div>
+  
+  <div id="message">クリア！</div>
+</div>
 
-    <script>
-        // --- タングラム図形の定義（起点 0,0 統一版） ---
-        const PIECE_DEFS = {
-            'L_TRI_1': { w: 200, h: 100, color: '#EF4444', path: 'M 0,0 L 200,0 L 100,100 Z' },
-            'L_TRI_2': { w: 100, h: 200, color: '#3B82F6', path: 'M 0,0 L 0,200 L 100,100 Z' },
-            'M_TRI':   { w: 100, h: 200, color: '#F59E0B', path: 'M 100,200 L 100,0 L 0,100 Z' },
-            'S_TRI_1': { w: 100, h: 50,  color: '#10B981', path: 'M 50,0 L 100,50 L 0,50 Z' },
-            'S_TRI_2': { w: 100, h: 50,  color: '#8B5CF6', path: 'M 50,0 L 100,50 L 0,50 Z' },
-            'SQUARE':  { w: 100, h: 100, color: '#EC4899', path: 'M 50,0 L 100,50 L 50,100 L 0,50 Z' },
-            'PARA':    { w: 150, h: 50,  color: '#06B6D4', path: 'M 0,50 L 100,50 L 150,0 L 50,0 Z' }
-        };
+<script>
+// --- 画面サイズへのスケール自動調整（絶対位置ズレ防止） ---
+function resizeGame() {
+  const container = document.getElementById('game-container');
+  const scale = Math.min(window.innerWidth / 1024, window.innerHeight / 768);
+  container.style.transform = `scale(${scale})`;
+}
+window.addEventListener('resize', resizeGame);
+resizeGame();
 
-        const SNAP_DIST = 40; 
+// --- Fabric.js 初期化 ---
+const canvas = new fabric.Canvas('c', {
+  selection: false, // 複数選択無効
+  preserveObjectStacking: true // 選択したオブジェクトが自動で最前面にくる設定
+});
 
-        // --- PDF教材に基づく問題データ (各レベル5問) ---
-        const puzzleData = [
-            // レベル1 (入門編: 2〜3ピース)
-            { id: '1-1', lvl: 1, title: '①ちょうちょう', parts: [{ type: 'L_TRI_2', x: 0, y: 0, rot: 0 }, { type: 'L_TRI_2', x: 100, y: 0, rot: 180 }] },
-            { id: '1-2', lvl: 1, title: '②やま', parts: [{ type: 'L_TRI_1', x: 0, y: 100, rot: 0 }, { type: 'L_TRI_1', x: 100, y: 100, rot: 0 }, { type: 'M_TRI', x: 100, y: 0, rot: 0 }] },
-            { id: '1-3', lvl: 1, title: '③きのこ', parts: [{ type: 'SQUARE', x: 50, y: 0, rot: 0 }, { type: 'S_TRI_1', x: 0, y: 50, rot: -90 }, { type: 'S_TRI_2', x: 100, y: 50, rot: 90 }] },
-            { id: '1-4', lvl: 1, title: '④あめ', parts: [{ type: 'SQUARE', x: 50, y: 0, rot: 0 }, { type: 'S_TRI_1', x: 0, y: 25, rot: 90 }, { type: 'S_TRI_2', x: 100, y: 25, rot: -90 }] },
-            { id: '1-5', lvl: 1, title: '⑤さかな', parts: [{ type: 'SQUARE', x: 50, y: 0, rot: 45 }, { type: 'S_TRI_1', x: 0, y: 25, rot: -90 }, { type: 'S_TRI_2', x: 100, y: 25, rot: 90 }] },
+// --- タングラムのベース図形定義（色付き、初期位置） ---
+// Fabric.jsのPolygonを使って厳密な多角形を生成します
+const colors = ['#f58220', '#8dc63f', '#00aeef', '#ec008c', '#fff200', '#951b81', '#ed1c24'];
+let activePiece = null;
 
-            // レベル2 (初級編: 3〜4ピース)
-            { id: '2-1', lvl: 2, title: '①やじるし', parts: [{ type: 'S_TRI_1', x: 100, y: 0, rot: 90 }, { type: 'SQUARE', x: 0, y: 25, rot: 0 }, { type: 'L_TRI_1', x: 50, y: 0, rot: 90 }] },
-            { id: '2-2', lvl: 2, title: '②えんぴつ', parts: [{ type: 'S_TRI_1', x: 100, y: 50, rot: 90 }, { type: 'SQUARE', x: 0, y: 50, rot: 0 }, { type: 'M_TRI', x: 50, y: 0, rot: 0 }] },
-            { id: '2-3', lvl: 2, title: '③こども', parts: [{ type: 'SQUARE', x: 50, y: 0, rot: 0 }, { type: 'M_TRI', x: 50, y: 100, rot: 0 }, { type: 'S_TRI_1', x: 0, y: 100, rot: -90 }] },
-            { id: '2-4', lvl: 2, title: '④ほうちょう', parts: [{ type: 'L_TRI_1', x: 50, y: 0, rot: 90 }, { type: 'S_TRI_1', x: 0, y: 50, rot: 0 }, { type: 'SQUARE', x: 100, y: 50, rot: 0 }] },
-            { id: '2-5', lvl: 2, title: '⑤ことり', parts: [{ type: 'S_TRI_1', x: 0, y: 50, rot: -90 }, { type: 'SQUARE', x: 50, y: 50, rot: 0 }, { type: 'M_TRI', x: 50, y: -50, rot: 0 }, { type: 'S_TRI_2', x: 100, y: 50, rot: 90 }] },
+// ※ここではテストとして、直角二等辺三角形（大）を1つ生成する関数を用意します。
+// 実際には7つのピースすべてを数学的に正確な座標配列で定義します。
+function createTriangleLarge(color, startX, startY) {
+  const tri = new fabric.Polygon([
+    {x: 0, y: 0},
+    {x: 200, y: 0},
+    {x: 100, y: 100}
+  ], {
+    fill: color,
+    left: startX,
+    top: startY,
+    originX: 'center',
+    originY: 'center',
+    hasControls: false, // 四隅の拡大縮小ツマミを消す（ドラッグのみ許可）
+    hasBorders: true,   // 選択時の枠線を許可
+    borderColor: 'red',
+    borderScaleFactor: 3,
+    padding: 5,
+    transparentCorners: false
+  });
+  return tri;
+}
 
-            // レベル3 (中級編: 5〜6ピース以上、シルエットのみ)
-            { id: '3-1', lvl: 3, title: '①はちどり', parts: [{ type: 'L_TRI_1', x: 50, y: 50, rot: 0 }, { type: 'S_TRI_1', x: 0, y: 50, rot: -90 }, { type: 'SQUARE', x: 100, y: 0, rot: 45 }, { type: 'M_TRI', x: 150, y: 50, rot: 0 }, { type: 'S_TRI_2', x: 100, y: 100, rot: 90 }] },
-            { id: '3-2', lvl: 3, title: '②クリスマスツリー', parts: [{ type: 'S_TRI_1', x: 50, y: 0, rot: 0 }, { type: 'M_TRI', x: 50, y: 50, rot: 0 }, { type: 'L_TRI_1', x: 0, y: 150, rot: 0 }, { type: 'S_TRI_2', x: 150, y: 150, rot: 0 }, { type: 'SQUARE', x: 50, y: 200, rot: 0 }] },
-            { id: '3-3', lvl: 3, title: '③りくがめ', parts: [{ type: 'L_TRI_1', x: 50, y: 100, rot: 180 }, { type: 'L_TRI_2', x: 50, y: 100, rot: 0 }, { type: 'SQUARE', x: 100, y: 50, rot: 45 }, { type: 'M_TRI', x: 150, y: 100, rot: 0 }, { type: 'S_TRI_1', x: 0, y: 150, rot: 0 }] },
-            { id: '3-4', lvl: 3, title: '④いえ', parts: [{ type: 'L_TRI_1', x: 50, y: 100, rot: 0 }, { type: 'L_TRI_2', x: 50, y: 100, rot: -90 }, { type: 'SQUARE', x: 50, y: 200, rot: 0 }, { type: 'M_TRI', x: 150, y: 200, rot: 0 }, { type: 'S_TRI_1', x: 150, y: 150, rot: 0 }] },
-            { id: '3-5', lvl: 3, title: '⑤いぬ', parts: [{ type: 'S_TRI_1', x: 0, y: 50, rot: -90 }, { type: 'SQUARE', x: 50, y: 50, rot: 45 }, { type: 'L_TRI_1', x: 100, y: 100, rot: 0 }, { type: 'M_TRI', x: 50, y: 150, rot: 0 }, { type: 'L_TRI_2', x: 200, y: 100, rot: 180 }] },
+// テスト用ピース配置
+const piece1 = createTriangleLarge(colors[0], 200, 200);
+canvas.add(piece1);
 
-            // レベル4 (上級編: 全7ピース使用＋回転)
-            { id: '4-1', lvl: 4, title: '①きょうりゅう', parts: [{ type: 'L_TRI_1', x: 50, y: 100, rot: 0 }, { type: 'L_TRI_2', x: 150, y: 100, rot: 180 }, { type: 'M_TRI', x: 50, y: 200, rot: 0 }, { type: 'S_TRI_1', x: 0, y: 50, rot: 90 }, { type: 'S_TRI_2', x: 200, y: 250, rot: 0 }, { type: 'SQUARE', x: 50, y: 0, rot: 45 }, { type: 'PARA', x: 250, y: 200, rot: 0 }] },
-            { id: '4-2', lvl: 4, title: '②ぞうのかお', parts: [{ type: 'L_TRI_1', x: 100, y: 100, rot: 180 }, { type: 'L_TRI_2', x: 0, y: 100, rot: 0 }, { type: 'M_TRI', x: 100, y: 0, rot: 180 }, { type: 'S_TRI_1', x: 50, y: 50, rot: 0 }, { type: 'S_TRI_2', x: 150, y: 50, rot: 0 }, { type: 'SQUARE', x: 100, y: 200, rot: 45 }, { type: 'PARA', x: 50, y: 250, rot: 90 }] },
-            { id: '4-3', lvl: 4, title: '③しんようじゅ', parts: [{ type: 'S_TRI_1', x: 100, y: 0, rot: 0 }, { type: 'S_TRI_2', x: 100, y: 50, rot: 0 }, { type: 'M_TRI', x: 100, y: 100, rot: 0 }, { type: 'L_TRI_1', x: 50, y: 200, rot: 0 }, { type: 'L_TRI_2', x: 150, y: 200, rot: 0 }, { type: 'SQUARE', x: 100, y: 300, rot: 0 }, { type: 'PARA', x: 100, y: 400, rot: 90 }] },
-            { id: '4-4', lvl: 4, title: '④かば', parts: [{ type: 'L_TRI_1', x: 100, y: 100, rot: 0 }, { type: 'L_TRI_2', x: 200, y: 100, rot: 180 }, { type: 'M_TRI', x: 50, y: 150, rot: -90 }, { type: 'S_TRI_1', x: 0, y: 100, rot: 0 }, { type: 'S_TRI_2', x: 250, y: 50, rot: 90 }, { type: 'SQUARE', x: 300, y: 100, rot: 45 }, { type: 'PARA', x: 150, y: 200, rot: 0 }] },
-            { id: '4-5', lvl: 4, title: '⑤はくちょう', parts: [{ type: 'L_TRI_1', x: 100, y: 150, rot: 0 }, { type: 'L_TRI_2', x: 100, y: 50, rot: 180 }, { type: 'M_TRI', x: 200, y: 150, rot: 0 }, { type: 'S_TRI_1', x: 50, y: 200, rot: -90 }, { type: 'S_TRI_2', x: 250, y: 100, rot: 90 }, { type: 'SQUARE', x: 300, y: 50, rot: 45 }, { type: 'PARA', x: 0, y: 150, rot: 0 }] }
-        ];
+// --- 選択状態のハンドリング ---
+canvas.on('selection:created', function(e) { activePiece = e.selected[0]; });
+canvas.on('selection:updated', function(e) { activePiece = e.selected[0]; });
+canvas.on('selection:cleared', function() { activePiece = null; });
 
-        let currentPuzzle = null;
-        let activePiece = null;
-        let startX, startY, initialLeft, initialTop;
-        let completed = 0;
-        let scale = 1.0;
+// --- ボタン操作（回転と反転） ---
+document.getElementById('btn-rotate-right').addEventListener('click', () => {
+  if (!activePiece) return;
+  // 45度ずつ回転
+  activePiece.set('angle', (activePiece.angle + 45) % 360);
+  canvas.renderAll();
+  checkSnapAndClear();
+});
 
-        function initMenu() {
-            puzzleData.forEach(p => {
-                const btn = document.createElement('button');
-                btn.className = `puzzle-btn lvl${p.lvl}`;
-                btn.onclick = () => startGame(p.id);
-                
-                const titleSpan = document.createElement('span');
-                titleSpan.textContent = p.title;
-                btn.appendChild(titleSpan);
+document.getElementById('btn-rotate-left').addEventListener('click', () => {
+  if (!activePiece) return;
+  activePiece.set('angle', (activePiece.angle - 45 + 360) % 360);
+  canvas.renderAll();
+  checkSnapAndClear();
+});
 
-                const isCleared = localStorage.getItem(`tangram_clear_${p.id}`) === 'true';
-                const markSpan = document.createElement('span');
-                markSpan.className = 'clear-mark';
-                markSpan.textContent = isCleared ? '★' : '';
-                btn.appendChild(markSpan);
+document.getElementById('btn-flip').addEventListener('click', () => {
+  if (!activePiece) return;
+  // X軸方向に反転（平行四辺形用）
+  activePiece.set('flipX', !activePiece.flipX);
+  canvas.renderAll();
+  checkSnapAndClear();
+});
 
-                document.getElementById(`grid-lvl${p.lvl}`).appendChild(btn);
-            });
-        }
+// --- 吸着（スナップ）とクリア判定ロジック ---
+// 今回はテストとして「x:600, y:400, angle:90」を正解位置と仮定
+const TARGET = { x: 600, y: 400, angle: 90 };
+const SNAP_RADIUS = 40; // 40ピクセル以内に近づいたら吸着
 
-        function backToMenu() {
-            document.getElementById('screen-game').classList.add('hidden');
-            document.getElementById('screen-menu').classList.remove('hidden');
-            
-            const dropArea = document.getElementById('drop-area');
-            const piecesArea = document.getElementById('pieces-area');
-            Array.from(dropArea.children).forEach(child => { if(child.id !== 'thumbnail-preview') child.remove(); });
-            document.getElementById('thumbnail-preview').innerHTML = '';
-            piecesArea.innerHTML = '';
-            document.querySelectorAll('#game-board > .piece').forEach(p => p.remove());
+canvas.on('object:modified', function(e) {
+  checkSnapAndClear();
+});
 
-            for(let i=1; i<=4; i++) document.getElementById(`grid-lvl${i}`).innerHTML = '';
-            initMenu();
-        }
+function checkSnapAndClear() {
+  const obj = activePiece;
+  if (!obj) return;
 
-        function createSVGPiece(type, color, rot = 0) {
-            const def = PIECE_DEFS[type];
-            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-            svg.setAttribute('viewBox', `0 0 ${def.w} ${def.h}`);
-            svg.style.transform = `rotate(${rot}deg)`;
-            
-            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-            path.setAttribute('d', def.path);
-            path.setAttribute('fill', color);
-            svg.appendChild(path);
-            return svg;
-        }
+  // 現在地と正解位置の距離を計算
+  const dx = obj.left - TARGET.x;
+  const dy = obj.top - TARGET.y;
+  const distance = Math.sqrt(dx * dx + dy * dy);
 
-        function startGame(id) {
-            document.getElementById('screen-menu').classList.add('hidden');
-            document.getElementById('screen-game').classList.remove('hidden');
-            currentPuzzle = puzzleData.find(p => p.id === id);
-            completed = 0;
-            
-            scale = window.innerWidth < 600 ? 0.7 : 1.2;
-
-            document.getElementById('game-title-text').textContent = currentPuzzle.title;
-            document.getElementById('success-overlay').classList.remove('show');
-            
-            const dropArea = document.getElementById('drop-area');
-            const piecesArea = document.getElementById('pieces-area');
-            const thumbArea = document.getElementById('thumbnail-preview');
-            
-            let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
-            currentPuzzle.parts.forEach(p => {
-                if (p.x < minX) minX = p.x;
-                if (p.y < minY) minY = p.y;
-                if (p.x + PIECE_DEFS[p.type].w > maxX) maxX = p.x + PIECE_DEFS[p.type].w;
-                if (p.y + PIECE_DEFS[p.type].h > maxY) maxY = p.y + PIECE_DEFS[p.type].h;
-            });
-
-            const puzzleW = (maxX - minX) * scale;
-            const puzzleH = (maxY - minY) * scale;
-            const offsetX = (dropArea.clientWidth - puzzleW) / 2 - (minX * scale);
-            const offsetY = (dropArea.clientHeight - puzzleH) / 2 - (minY * scale);
-
-            const thumbSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-            thumbSvg.setAttribute('viewBox', `${minX} ${minY} ${maxX - minX} ${maxY - minY}`);
-
-            currentPuzzle.parts.forEach((part, i) => {
-                const def = PIECE_DEFS[part.type];
-
-                const targetWrap = document.createElement('div');
-                targetWrap.className = `shape-container target lvl${currentPuzzle.lvl}-target`;
-                targetWrap.style.width = (def.w * scale) + 'px';
-                targetWrap.style.height = (def.h * scale) + 'px';
-                targetWrap.style.left = (part.x * scale + offsetX) + 'px';
-                targetWrap.style.top = (part.y * scale + offsetY) + 'px';
-                targetWrap.dataset.id = i;
-                targetWrap.dataset.filled = "false";
-                targetWrap.appendChild(createSVGPiece(part.type, def.color, part.rot));
-                dropArea.appendChild(targetWrap);
-
-                const thumbPath = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-                thumbPath.setAttribute('transform', `translate(${part.x}, ${part.y})`);
-                thumbPath.appendChild(createSVGPiece(part.type, def.color, part.rot));
-                thumbSvg.appendChild(thumbPath);
-
-                const slot = document.createElement('div');
-                slot.className = 'piece-slot';
-                slot.style.width = (def.w * scale) + 'px';
-                slot.style.height = (def.h * scale) + 'px';
-                
-                const pieceWrap = document.createElement('div');
-                pieceWrap.className = 'shape-container piece';
-                pieceWrap.style.width = '100%';
-                pieceWrap.style.height = '100%';
-                
-                let initialRot = part.rot;
-                if (currentPuzzle.lvl === 4) {
-                    initialRot = Math.floor(Math.random() * 8) * 45;
-                }
-                
-                pieceWrap.dataset.id = i;
-                pieceWrap.dataset.type = part.type;
-                pieceWrap.dataset.targetRot = part.rot;
-                pieceWrap.dataset.currentRot = initialRot;
-                
-                const svgNode = createSVGPiece(part.type, def.color, initialRot);
-                svgNode.id = `svg-${i}`;
-                pieceWrap.appendChild(svgNode);
-                
-                pieceWrap.addEventListener('pointerdown', handlePointerDown);
-                slot.appendChild(pieceWrap);
-                piecesArea.appendChild(slot);
-            });
-
-            thumbArea.appendChild(thumbSvg);
-        }
-
-        function handlePointerDown(e) {
-            activePiece = e.currentTarget;
-            activePiece.setPointerCapture(e.pointerId);
-            activePiece.dataset.isDragging = "false"; 
-
-            startX = e.clientX; startY = e.clientY;
-            
-            const boardRect = document.getElementById('game-board').getBoundingClientRect();
-            const pieceRect = activePiece.getBoundingClientRect();
-            
-            if (activePiece.parentElement.classList.contains('piece-slot')) {
-                const left = pieceRect.left - boardRect.left;
-                const top = pieceRect.top - boardRect.top;
-                activePiece.classList.add('dragging');
-                document.getElementById('game-board').appendChild(activePiece);
-                activePiece.style.left = left + 'px';
-                activePiece.style.top = top + 'px';
-            } else {
-                activePiece.classList.add('dragging');
-            }
-
-            initialLeft = parseFloat(activePiece.style.left || 0);
-            initialTop = parseFloat(activePiece.style.top || 0);
-
-            activePiece.addEventListener('pointermove', handlePointerMove);
-            activePiece.addEventListener('pointerup', handlePointerUp);
-        }
-
-        function handlePointerMove(e) {
-            if (!activePiece) return;
-            const dx = e.clientX - startX;
-            const dy = e.clientY - startY;
-            
-            if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
-                activePiece.dataset.isDragging = "true";
-            }
-            
-            activePiece.style.left = (initialLeft + dx) + 'px';
-            activePiece.style.top = (initialTop + dy) + 'px';
-        }
-
-        function handlePointerUp(e) {
-            if (!activePiece) return;
-            activePiece.removeEventListener('pointermove', handlePointerMove);
-            activePiece.removeEventListener('pointerup', handlePointerUp);
-            activePiece.releasePointerCapture(e.pointerId);
-            activePiece.classList.remove('dragging');
-
-            if (currentPuzzle.lvl === 4 && activePiece.dataset.isDragging === "false") {
-                let rot = parseInt(activePiece.dataset.currentRot);
-                rot = (rot + 45) % 360;
-                activePiece.dataset.currentRot = rot;
-                const svg = document.getElementById(`svg-${activePiece.dataset.id}`);
-                svg.style.transform = `rotate(${rot}deg)`;
-            }
-
-            checkSnap(activePiece);
-            activePiece = null;
-        }
-
-        function checkSnap(piece) {
-            const pieceRect = piece.getBoundingClientRect();
-            const boardRect = document.getElementById('game-board').getBoundingClientRect();
-            
-            const pX = (pieceRect.left - boardRect.left) + pieceRect.width / 2;
-            const pY = (pieceRect.top - boardRect.top) + pieceRect.height / 2;
-
-            const targets = document.querySelectorAll('.target');
-            for (let target of targets) {
-                if (target.dataset.id === piece.dataset.id && target.dataset.filled === "false") {
-                    
-                    if (currentPuzzle.lvl === 4) {
-                        const currentRot = parseInt(piece.dataset.currentRot) % 360;
-                        const targetRot = parseInt(piece.dataset.targetRot) % 360;
-                        let diff = Math.abs(currentRot - targetRot);
-                        if (diff !== 0 && diff !== 360) continue; 
-                    }
-
-                    const targetRect = target.getBoundingClientRect();
-                    const tX = (targetRect.left - boardRect.left) + targetRect.width / 2;
-                    const tY = (targetRect.top - boardRect.top) + targetRect.height / 2;
-                    
-                    if (Math.hypot(pX - tX, pY - tY) < SNAP_DIST) {
-                        piece.style.left = (targetRect.left - boardRect.left) + 'px';
-                        piece.style.top = (targetRect.top - boardRect.top) + 'px';
-                        piece.style.pointerEvents = 'none'; 
-                        target.dataset.filled = "true";
-                        completed++;
-                        break;
-                    }
-                }
-            }
-
-            if (completed === currentPuzzle.parts.length) {
-                localStorage.setItem(`tangram_clear_${currentPuzzle.id}`, 'true');
-                setTimeout(() => {
-                    document.getElementById('success-overlay').classList.add('show');
-                    setTimeout(backToMenu, 2000); 
-                }, 300);
-            }
-        }
-
-        initMenu();
-    </script>
+  // 距離が近く、かつ角度が一致していれば吸着（完全一致以外は弾く）
+  // ※平行四辺形の場合は反転フラグのチェックもここに追加します
+  if (distance < SNAP_RADIUS && obj.angle === TARGET.angle) {
+    obj.set({
+      left: TARGET.x,
+      top: TARGET.y,
+      selectable: false, // 固定して動かせなくする
+      evented: false
+    });
+    canvas.discardActiveObject();
+    canvas.renderAll();
+    
+    // 全ピースが固定されたかどうかの判定（テスト版では即クリア）
+    document.getElementById('message').style.display = 'block';
+  }
+}
+</script>
 </body>
 </html>
