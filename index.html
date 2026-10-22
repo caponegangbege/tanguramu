@@ -47,7 +47,6 @@
             stroke-dasharray: 4;
         }
 
-        /* 境界線を消す（完全なシルエット化） */
         .silhouette-merged {
             fill: #94a3b8;
             stroke: #94a3b8;
@@ -63,15 +62,15 @@
         <p class="text-xl mb-12 text-slate-300">レベルをえらんでね</p>
         
         <div class="flex flex-col gap-6 w-4/5 max-w-md">
-            <button onclick="startGame(1)" class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-4 px-8 rounded-full shadow-xl text-xl transition-transform active:scale-95 flex flex-col items-center">
+            <button id="btn-level-1" class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-4 px-8 rounded-full shadow-xl text-xl transition-transform active:scale-95 flex flex-col items-center">
                 <span>レベル１</span>
                 <span class="text-sm font-normal opacity-80">［点線あり］</span>
             </button>
-            <button onclick="startGame(2)" class="bg-green-500 hover:bg-green-400 text-white font-bold py-4 px-8 rounded-full shadow-xl text-xl transition-transform active:scale-95 flex flex-col items-center">
+            <button id="btn-level-2" class="bg-green-500 hover:bg-green-400 text-white font-bold py-4 px-8 rounded-full shadow-xl text-xl transition-transform active:scale-95 flex flex-col items-center">
                 <span>レベル２</span>
                 <span class="text-sm font-normal opacity-80">［点線なし・二等辺三角形なし］</span>
             </button>
-            <button onclick="startGame(3)" class="bg-red-500 hover:bg-red-400 text-white font-bold py-4 px-8 rounded-full shadow-xl text-xl transition-transform active:scale-95 flex flex-col items-center">
+            <button id="btn-level-3" class="bg-red-500 hover:bg-red-400 text-white font-bold py-4 px-8 rounded-full shadow-xl text-xl transition-transform active:scale-95 flex flex-col items-center">
                 <span>レベル３</span>
                 <span class="text-sm font-normal opacity-80">［点線なし・全図形あり］</span>
             </button>
@@ -83,10 +82,10 @@
         <header class="h-16 bg-slate-800 text-white flex items-center justify-between px-6 shadow-md select-none">
             <h1 id="current-level-display" class="text-xl font-bold tracking-wider">Level 1 - Q1</h1>
             <div class="flex gap-4">
-                <button onclick="nextStage()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded transition-colors shadow-sm">
+                <button id="btn-skip" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded transition-colors shadow-sm">
                     スキップ ⏭
                 </button>
-                <button onclick="showTitleScreen()" class="bg-slate-600 hover:bg-slate-500 text-white font-bold py-2 px-4 rounded transition-colors shadow-sm">
+                <button id="btn-quit" class="bg-slate-600 hover:bg-slate-500 text-white font-bold py-2 px-4 rounded transition-colors shadow-sm">
                     やめる
                 </button>
             </div>
@@ -103,7 +102,7 @@
                 <div class="bg-white p-8 rounded-2xl shadow-2xl text-center border-4 border-yellow-400 transform transition-all scale-110">
                     <h2 class="text-4xl font-extrabold text-red-500 mb-4 drop-shadow-sm">クリア！</h2>
                     <p class="text-lg text-gray-600 mb-6">ぴったり ハマったね！</p>
-                    <button id="next-level-btn" onclick="nextStage()" class="bg-yellow-400 hover:bg-yellow-500 text-slate-800 font-bold py-3 px-8 rounded-full shadow-lg text-lg w-full transition-transform active:scale-95">
+                    <button id="next-level-btn" class="bg-yellow-400 hover:bg-yellow-500 text-slate-800 font-bold py-3 px-8 rounded-full shadow-lg text-lg w-full transition-transform active:scale-95">
                         次の問題へ
                     </button>
                 </div>
@@ -178,7 +177,7 @@
                         { id: 'l1-q7-iso-tri', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 330, targetY: 200 }
                     ]
                 },
-                { // 第8問: 大きなお城（複数図形）
+                { // 第8問: 大きなお城
                     showLines: true,
                     pieces: [
                         { id: 'l1-q8-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 250, targetY: 250 },
@@ -189,7 +188,7 @@
                         { id: 'l1-q8-tri3', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 450, targetY: 163.4 }
                     ]
                 },
-                { // 第9問: 長い橋（複数図形）
+                { // 第9問: 長い橋
                     showLines: true,
                     pieces: [
                         { id: 'l1-q9-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 190, targetY: 150 },
@@ -201,7 +200,7 @@
                         { id: 'l1-q9-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 470, targetY: 110 }
                     ]
                 },
-                { // 第10問: 動物（キリン）（複数図形）
+                { // 第10問: 動物（キリン）
                     showLines: true,
                     pieces: [
                         { id: 'l1-q10-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 250, targetY: 200 },
@@ -212,7 +211,7 @@
                         { id: 'l1-q10-sq4', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 390, targetY: 270 }
                     ]
                 },
-                { // 第11問: おおきなふね (大型船)
+                { // 第11問: おおきなふね
                     showLines: true,
                     pieces: [
                         { id: 'l1-q11-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 230, targetY: 270 },
@@ -294,16 +293,151 @@
                         { id: 'l1-q16-rect5', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 490, targetY: 150 },
                         { id: 'l1-q16-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 390, targetY: 33.4 }
                     ]
+                },
+                { // 第17問: おおきなロボット
+                    showLines: true,
+                    pieces: [
+                        { id: 'l1-q17-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 100 },
+                        { id: 'l1-q17-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 13.4 },
+                        { id: 'l1-q17-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 200 },
+                        { id: 'l1-q17-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 270 },
+                        { id: 'l1-q17-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 190, targetY: 200 },
+                        { id: 'l1-q17-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 470, targetY: 200 },
+                        { id: 'l1-q17-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 300, targetY: 340 },
+                        { id: 'l1-q17-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 400, targetY: 340 },
+                        { id: 'l1-q17-iso3', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 280, targetY: 440 },
+                        { id: 'l1-q17-iso4', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 380, targetY: 440 }
+                    ]
+                },
+                { // 第18問: ごうかきゃくせん
+                    showLines: true,
+                    pieces: [
+                        { id: 'l1-q18-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 260, targetY: 300 },
+                        { id: 'l1-q18-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 400, targetY: 300 },
+                        { id: 'l1-q18-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 120, targetY: 300 },
+                        { id: 'l1-q18-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 540, targetY: 300 },
+                        { id: 'l1-q18-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 260, targetY: 230 },
+                        { id: 'l1-q18-rect4', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 400, targetY: 230 },
+                        { id: 'l1-q18-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 280, targetY: 130 },
+                        { id: 'l1-q18-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 380, targetY: 130 },
+                        { id: 'l1-q18-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 280, targetY: 43.4 },
+                        { id: 'l1-q18-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 380, targetY: 43.4 }
+                    ]
+                },
+                { // 第19問: おおきなしんでん
+                    showLines: true,
+                    pieces: [
+                        { id: 'l1-q19-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 190, targetY: 300 },
+                        { id: 'l1-q19-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 300 },
+                        { id: 'l1-q19-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 470, targetY: 300 },
+                        { id: 'l1-q19-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 210, targetY: 200 },
+                        { id: 'l1-q19-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 200 },
+                        { id: 'l1-q19-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 490, targetY: 200 },
+                        { id: 'l1-q19-rect4', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 190, targetY: 130 },
+                        { id: 'l1-q19-rect5', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 130 },
+                        { id: 'l1-q19-rect6', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 470, targetY: 130 },
+                        { id: 'l1-q19-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 43.4 }
+                    ]
+                },
+                { // 第20問: ちょうとっきゅう
+                    showLines: true,
+                    pieces: [
+                        { id: 'l1-q20-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 160, targetY: 280 },
+                        { id: 'l1-q20-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 300, targetY: 280 },
+                        { id: 'l1-q20-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 440, targetY: 280 },
+                        { id: 'l1-q20-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 180, targetY: 180 },
+                        { id: 'l1-q20-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 320, targetY: 180 },
+                        { id: 'l1-q20-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 460, targetY: 180 },
+                        { id: 'l1-q20-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 160, targetY: 140 },
+                        { id: 'l1-q20-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 300, targetY: 140 },
+                        { id: 'l1-q20-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 460, targetY: 93.4 },
+                        { id: 'l1-q20-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 580, targetY: 263.4 }
+                    ]
+                },
+                { // 第21問: おおきなひこうき
+                    showLines: true,
+                    pieces: [
+                        { id: 'l1-q21-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 13.4 },
+                        { id: 'l1-q21-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 100 },
+                        { id: 'l1-q21-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 200 },
+                        { id: 'l1-q21-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 300 },
+                        { id: 'l1-q21-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 210, targetY: 160 },
+                        { id: 'l1-q21-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 450, targetY: 160 },
+                        { id: 'l1-q21-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 210, targetY: 120 },
+                        { id: 'l1-q21-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 450, targetY: 120 },
+                        { id: 'l1-q21-iso3', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 210, targetY: 360 },
+                        { id: 'l1-q21-iso4', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 450, targetY: 360 }
+                    ]
+                },
+                { // 第22問: きょだいクレーンしゃ
+                    showLines: true,
+                    pieces: [
+                        { id: 'l1-q22-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 200, targetY: 260 },
+                        { id: 'l1-q22-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 340, targetY: 260 },
+                        { id: 'l1-q22-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 220, targetY: 330 },
+                        { id: 'l1-q22-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 360, targetY: 330 },
+                        { id: 'l1-q22-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 200, targetY: 160 },
+                        { id: 'l1-q22-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 180, targetY: 120 },
+                        { id: 'l1-q22-sq4', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 380, targetY: 160 },
+                        { id: 'l1-q22-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 380, targetY: 90 },
+                        { id: 'l1-q22-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 400, targetY: 3.4 },
+                        { id: 'l1-q22-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 480, targetY: 290 }
+                    ]
+                },
+                { // 第23問: ゆうえんちのおしろ
+                    showLines: true,
+                    pieces: [
+                        { id: 'l1-q23-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 190, targetY: 320 },
+                        { id: 'l1-q23-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 320 },
+                        { id: 'l1-q23-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 470, targetY: 320 },
+                        { id: 'l1-q23-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 210, targetY: 220 },
+                        { id: 'l1-q23-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 220 },
+                        { id: 'l1-q23-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 490, targetY: 220 },
+                        { id: 'l1-q23-sq4', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 120 },
+                        { id: 'l1-q23-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 33.4 },
+                        { id: 'l1-q23-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 190, targetY: 180 },
+                        { id: 'l1-q23-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 470, targetY: 180 }
+                    ]
+                },
+                { // 第24問: きょだいショベルカー
+                    showLines: true,
+                    pieces: [
+                        { id: 'l1-q24-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 180, targetY: 300 },
+                        { id: 'l1-q24-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 320, targetY: 300 },
+                        { id: 'l1-q24-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 160, targetY: 230 },
+                        { id: 'l1-q24-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 300, targetY: 230 },
+                        { id: 'l1-q24-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 180, targetY: 130 },
+                        { id: 'l1-q24-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 160, targetY: 90 },
+                        { id: 'l1-q24-sq4', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 340, targetY: 130 },
+                        { id: 'l1-q24-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 440, targetY: 130 },
+                        { id: 'l1-q24-sq5', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 580, targetY: 130 },
+                        { id: 'l1-q24-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 580, targetY: 43.4 }
+                    ]
+                },
+                { // 第25問: おおきなクジラ
+                    showLines: true,
+                    pieces: [
+                        { id: 'l1-q25-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 180, targetY: 280 },
+                        { id: 'l1-q25-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 320, targetY: 280 },
+                        { id: 'l1-q25-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 460, targetY: 280 },
+                        { id: 'l1-q25-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 200, targetY: 180 },
+                        { id: 'l1-q25-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 340, targetY: 180 },
+                        { id: 'l1-q25-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 480, targetY: 180 },
+                        { id: 'l1-q25-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 90, targetY: 280 },
+                        { id: 'l1-q25-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 570, targetY: 280 },
+                        { id: 'l1-q25-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 340, targetY: 93.4 },
+                        { id: 'l1-q25-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 340, targetY: 6.8 }
+                    ]
                 }
             ],
-            2: [ 
+            2: [
                 { // 第1問: タワー
                     showLines: false,
                     pieces: [
-                        { id: 'l2-q1-eq', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 60 },
-                        { id: 'l2-q1-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 146.6 },
-                        { id: 'l2-q1-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 246.6 },
-                        { id: 'l2-q1-rect', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 346.6 }
+                        { id: 'l2-q1-rect', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 300 },
+                        { id: 'l2-q1-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 200 },
+                        { id: 'l2-q1-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 100 },
+                        { id: 'l2-q1-eq', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 13.4 }
                     ]
                 },
                 { // 第2問: トラック
@@ -311,125 +445,125 @@
                     pieces: [
                         { id: 'l2-q2-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 200, targetY: 250 },
                         { id: 'l2-q2-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 340, targetY: 250 },
-                        { id: 'l2-q2-sq', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 380, targetY: 150 },
-                        { id: 'l2-q2-eq', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 380, targetY: 63.4 }
+                        { id: 'l2-q2-sq', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 420, targetY: 150 },
+                        { id: 'l2-q2-eq', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 420, targetY: 63.4 }
                     ]
                 },
                 { // 第3問: ロボット
                     showLines: false,
                     pieces: [
-                        { id: 'l2-q3-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 80 },
-                        { id: 'l2-q3-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 180 },
-                        { id: 'l2-q3-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 250 },
-                        { id: 'l2-q3-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 350 }
+                        { id: 'l2-q3-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 70 },
+                        { id: 'l2-q3-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 170 },
+                        { id: 'l2-q3-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 240 },
+                        { id: 'l2-q3-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 340 }
                     ]
                 },
                 { // 第4問: おしろ
                     showLines: false,
                     pieces: [
-                        { id: 'l2-q4-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 200, targetY: 300 },
-                        { id: 'l2-q4-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 340, targetY: 300 },
-                        { id: 'l2-q4-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 220, targetY: 200 },
-                        { id: 'l2-q4-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 360, targetY: 200 },
-                        { id: 'l2-q4-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 220, targetY: 113.4 },
-                        { id: 'l2-q4-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 360, targetY: 113.4 }
+                        { id: 'l2-q4-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 220, targetY: 250 },
+                        { id: 'l2-q4-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 360, targetY: 250 },
+                        { id: 'l2-q4-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 240, targetY: 150 },
+                        { id: 'l2-q4-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 380, targetY: 150 },
+                        { id: 'l2-q4-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 240, targetY: 63.4 },
+                        { id: 'l2-q4-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 380, targetY: 63.4 }
                     ]
                 },
                 { // 第5問: せんかん
                     showLines: false,
                     pieces: [
-                        { id: 'l2-q5-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 260, targetY: 300 },
-                        { id: 'l2-q5-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 400, targetY: 300 },
-                        { id: 'l2-q5-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 300, targetY: 200 },
-                        { id: 'l2-q5-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 400, targetY: 200 },
-                        { id: 'l2-q5-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 113.4 }
+                        { id: 'l2-q5-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 210, targetY: 280 },
+                        { id: 'l2-q5-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 350, targetY: 280 },
+                        { id: 'l2-q5-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 280, targetY: 210 },
+                        { id: 'l2-q5-sq', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 300, targetY: 110 },
+                        { id: 'l2-q5-eq', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 300, targetY: 23.4 }
                     ]
                 },
                 { // 第6問: スペースシャトル
                     showLines: false,
                     pieces: [
-                        { id: 'l2-q6-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 83.4 },
-                        { id: 'l2-q6-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 170 },
-                        { id: 'l2-q6-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 270 },
-                        { id: 'l2-q6-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 190, targetY: 270 },
-                        { id: 'l2-q6-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 470, targetY: 270 },
-                        { id: 'l2-q6-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 210, targetY: 340 },
-                        { id: 'l2-q6-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 490, targetY: 340 }
+                        { id: 'l2-q6-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 230, targetY: 200 },
+                        { id: 'l2-q6-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 370, targetY: 200 },
+                        { id: 'l2-q6-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 270 },
+                        { id: 'l2-q6-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 250, targetY: 270 },
+                        { id: 'l2-q6-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 113.4 },
+                        { id: 'l2-q6-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 250, targetY: 113.4 },
+                        { id: 'l2-q6-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 370 }
                     ]
                 },
-                { // 第7問: きかんしゃ (7ピース)
+                { // 第7問: きかんしゃ
                     showLines: false,
                     pieces: [
-                        { id: 'l2-q7-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 220, targetY: 300 },
-                        { id: 'l2-q7-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 360, targetY: 300 },
-                        { id: 'l2-q7-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 220, targetY: 230 },
-                        { id: 'l2-q7-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 380, targetY: 200 },
-                        { id: 'l2-q7-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 380, targetY: 100 },
-                        { id: 'l2-q7-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 380, targetY: 13.4 },
-                        { id: 'l2-q7-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 240, targetY: 143.4 }
+                        { id: 'l2-q7-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 190, targetY: 280 },
+                        { id: 'l2-q7-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 280 },
+                        { id: 'l2-q7-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 470, targetY: 280 },
+                        { id: 'l2-q7-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 210, targetY: 180 },
+                        { id: 'l2-q7-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 210, targetY: 80 },
+                        { id: 'l2-q7-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 330, targetY: 193.4 },
+                        { id: 'l2-q7-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 210, targetY: 6.8 }
                     ]
                 },
-                { // 第8問: きょうかい (7ピース)
+                { // 第8問: きょうかい
                     showLines: false,
                     pieces: [
-                        { id: 'l2-q8-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 210, targetY: 300 },
-                        { id: 'l2-q8-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 450, targetY: 300 },
-                        { id: 'l2-q8-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 270 },
-                        { id: 'l2-q8-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 170 },
-                        { id: 'l2-q8-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 83.4 },
-                        { id: 'l2-q8-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 230, targetY: 213.4 },
-                        { id: 'l2-q8-eq3', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 470, targetY: 213.4 }
+                        { id: 'l2-q8-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 190, targetY: 250 },
+                        { id: 'l2-q8-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 470, targetY: 250 },
+                        { id: 'l2-q8-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 220 },
+                        { id: 'l2-q8-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 120 },
+                        { id: 'l2-q8-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 190, targetY: 163.4 },
+                        { id: 'l2-q8-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 470, targetY: 163.4 },
+                        { id: 'l2-q8-eq3', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 33.4 }
                     ]
                 },
-                { // 第9問: ロボット (7ピース)
+                { // 第9問: ロボット
                     showLines: false,
                     pieces: [
-                        { id: 'l2-q9-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 250, targetY: 300 },
-                        { id: 'l2-q9-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 390, targetY: 300 },
-                        { id: 'l2-q9-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 290, targetY: 200 },
-                        { id: 'l2-q9-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 390, targetY: 200 },
-                        { id: 'l2-q9-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 340, targetY: 100 },
-                        { id: 'l2-q9-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 190, targetY: 213.4 },
-                        { id: 'l2-q9-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 490, targetY: 213.4 }
+                        { id: 'l2-q9-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 260, targetY: 300 },
+                        { id: 'l2-q9-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 400, targetY: 300 },
+                        { id: 'l2-q9-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 200 },
+                        { id: 'l2-q9-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 100 },
+                        { id: 'l2-q9-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 270, targetY: 213.4 },
+                        { id: 'l2-q9-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 430, targetY: 213.4 },
+                        { id: 'l2-q9-eq3', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 13.4 }
                     ]
                 },
-                { // 第10問: きょうりゅう (7ピース)
+                { // 第10問: きょうりゅう
                     showLines: false,
                     pieces: [
-                        { id: 'l2-q10-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 200, targetY: 200 },
-                        { id: 'l2-q10-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 340, targetY: 200 },
-                        { id: 'l2-q10-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 200, targetY: 270 },
-                        { id: 'l2-q10-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 380, targetY: 270 },
-                        { id: 'l2-q10-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 200, targetY: 113.4 },
-                        { id: 'l2-q10-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 300, targetY: 113.4 },
-                        { id: 'l2-q10-eq3', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 400, targetY: 113.4 }
+                        { id: 'l2-q10-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 230, targetY: 250 },
+                        { id: 'l2-q10-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 370, targetY: 250 },
+                        { id: 'l2-q10-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 180, targetY: 220 },
+                        { id: 'l2-q10-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 510, targetY: 220 },
+                        { id: 'l2-q10-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 250, targetY: 163.4 },
+                        { id: 'l2-q10-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 163.4 },
+                        { id: 'l2-q10-eq3', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 450, targetY: 163.4 }
                     ]
                 },
-                { // 第11問: うちゅうステーション (7ピース)
+                { // 第11問: うちゅうステーション
                     showLines: false,
                     pieces: [
                         { id: 'l2-q11-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 200 },
-                        { id: 'l2-q11-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 300 },
-                        { id: 'l2-q11-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 210, targetY: 300 },
-                        { id: 'l2-q11-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 450, targetY: 300 },
-                        { id: 'l2-q11-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 113.4 },
-                        { id: 'l2-q11-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 230, targetY: 213.4 },
-                        { id: 'l2-q11-eq3', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 470, targetY: 213.4 }
+                        { id: 'l2-q11-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 100 },
+                        { id: 'l2-q11-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 13.4 },
+                        { id: 'l2-q11-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 210, targetY: 200 },
+                        { id: 'l2-q11-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 450, targetY: 200 },
+                        { id: 'l2-q11-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 230, targetY: 113.4 },
+                        { id: 'l2-q11-eq3', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 470, targetY: 113.4 }
                     ]
                 },
-                { // 第12問: フェリー (7ピース)
+                { // 第12問: フェリー
                     showLines: false,
                     pieces: [
-                        { id: 'l2-q12-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 180, targetY: 300 },
-                        { id: 'l2-q12-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 320, targetY: 300 },
-                        { id: 'l2-q12-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 460, targetY: 300 },
-                        { id: 'l2-q12-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 220, targetY: 200 },
-                        { id: 'l2-q12-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 320, targetY: 200 },
-                        { id: 'l2-q12-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 420, targetY: 200 },
-                        { id: 'l2-q12-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 320, targetY: 113.4 }
+                        { id: 'l2-q12-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 190, targetY: 280 },
+                        { id: 'l2-q12-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 280 },
+                        { id: 'l2-q12-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 470, targetY: 280 },
+                        { id: 'l2-q12-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 250, targetY: 180 },
+                        { id: 'l2-q12-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 180 },
+                        { id: 'l2-q12-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 120, targetY: 280 },
+                        { id: 'l2-q12-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 610, targetY: 280 }
                     ]
                 },
-                { // 第13問: おおきなおしろ (9ピース)
+                { // 第13問: おおきなおしろ
                     showLines: false,
                     pieces: [
                         { id: 'l2-q13-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 190, targetY: 300 },
@@ -443,191 +577,325 @@
                         { id: 'l2-q13-eq3', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 490, targetY: 113.4 }
                     ]
                 },
-                { // 第14問: きょだいせんかん (8ピース)
+                { // 第14問: きょだいせんかん
                     showLines: false,
                     pieces: [
-                        { id: 'l2-q14-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 190, targetY: 270 },
-                        { id: 'l2-q14-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 270 },
-                        { id: 'l2-q14-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 470, targetY: 270 },
-                        { id: 'l2-q14-rect4', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 260, targetY: 200 },
-                        { id: 'l2-q14-rect5', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 400, targetY: 200 },
-                        { id: 'l2-q14-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 280, targetY: 100 },
-                        { id: 'l2-q14-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 380, targetY: 100 },
-                        { id: 'l2-q14-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 330, targetY: 13.4 }
+                        { id: 'l2-q14-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 190, targetY: 280 },
+                        { id: 'l2-q14-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 280 },
+                        { id: 'l2-q14-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 470, targetY: 280 },
+                        { id: 'l2-q14-rect4', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 260, targetY: 210 },
+                        { id: 'l2-q14-rect5', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 400, targetY: 210 },
+                        { id: 'l2-q14-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 280, targetY: 110 },
+                        { id: 'l2-q14-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 420, targetY: 110 },
+                        { id: 'l2-q14-eq', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 23.4 }
                     ]
                 },
-                { // 第15問: きょだいロボット (9ピース)
+                { // 第15問: きょだいロボット
                     showLines: false,
                     pieces: [
-                        { id: 'l2-q15-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 270, targetY: 300 },
-                        { id: 'l2-q15-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 430, targetY: 300 },
+                        { id: 'l2-q15-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 280, targetY: 300 },
+                        { id: 'l2-q15-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 420, targetY: 300 },
                         { id: 'l2-q15-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 230 },
                         { id: 'l2-q15-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 160 },
                         { id: 'l2-q15-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 60 },
-                        { id: 'l2-q15-sq4', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 230, targetY: 160 },
-                        { id: 'l2-q15-sq5', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 470, targetY: 160 },
-                        { id: 'l2-q15-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 230, targetY: 73.4 },
-                        { id: 'l2-q15-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 470, targetY: 73.4 }
+                        { id: 'l2-q15-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 26.8 },
+                        { id: 'l2-q15-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 230, targetY: 160 },
+                        { id: 'l2-q15-eq3', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 470, targetY: 160 },
+                        { id: 'l2-q15-eq4', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 386.6 }
                     ]
                 },
-                { // 第16問: トラクター (8ピース)
+                { // 第16問: トラクター
                     showLines: false,
                     pieces: [
-                        { id: 'l2-q16-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 250, targetY: 250 },
-                        { id: 'l2-q16-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 390, targetY: 250 },
-                        { id: 'l2-q16-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 270, targetY: 320 },
-                        { id: 'l2-q16-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 410, targetY: 320 },
-                        { id: 'l2-q16-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 270, targetY: 150 },
-                        { id: 'l2-q16-sq4', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 410, targetY: 150 },
-                        { id: 'l2-q16-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 270, targetY: 63.4 },
-                        { id: 'l2-q16-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 410, targetY: 63.4 }
+                        { id: 'l2-q16-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 310, targetY: 250 },
+                        { id: 'l2-q16-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 210, targetY: 220 },
+                        { id: 'l2-q16-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 450, targetY: 220 },
+                        { id: 'l2-q16-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 310, targetY: 180 },
+                        { id: 'l2-q16-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 330, targetY: 80 },
+                        { id: 'l2-q16-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 330, targetY: 6.8 },
+                        { id: 'l2-q16-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 170, targetY: 250 },
+                        { id: 'l2-q16-eq3', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 550, targetY: 250 }
                     ]
                 },
-                { // 第17問: ロケットはっしゃだい (9ピース)
+                { // 第17問: ロケットはっしゃだい
                     showLines: false,
                     pieces: [
-                        { id: 'l2-q17-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 270 },
-                        { id: 'l2-q17-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 190, targetY: 270 },
-                        { id: 'l2-q17-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 470, targetY: 270 },
-                        { id: 'l2-q17-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 170 },
-                        { id: 'l2-q17-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 230, targetY: 170 },
-                        { id: 'l2-q17-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 470, targetY: 170 },
-                        { id: 'l2-q17-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 83.4 },
-                        { id: 'l2-q17-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 230, targetY: 83.4 },
-                        { id: 'l2-q17-eq3', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 470, targetY: 83.4 }
+                        { id: 'l2-q17-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 190, targetY: 300 },
+                        { id: 'l2-q17-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 300 },
+                        { id: 'l2-q17-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 470, targetY: 300 },
+                        { id: 'l2-q17-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 200 },
+                        { id: 'l2-q17-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 100 },
+                        { id: 'l2-q17-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 0 },
+                        { id: 'l2-q17-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: -86.6 },
+                        { id: 'l2-q17-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 210, targetY: 213.4 },
+                        { id: 'l2-q17-eq3', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 490, targetY: 213.4 }
                     ]
                 },
-                { // 第18問: スフィンクス (9ピース)
+                { // 第18問: スフィンクス
                     showLines: false,
                     pieces: [
-                        { id: 'l2-q18-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 200, targetY: 270 },
-                        { id: 'l2-q18-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 340, targetY: 270 },
-                        { id: 'l2-q18-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 380, targetY: 100 },
-                        { id: 'l2-q18-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 200, targetY: 340 },
-                        { id: 'l2-q18-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 380, targetY: 340 },
-                        { id: 'l2-q18-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 380, targetY: 170 },
-                        { id: 'l2-q18-sq4', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 100, targetY: 270 },
-                        { id: 'l2-q18-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 380, targetY: 13.4 },
-                        { id: 'l2-q18-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 240, targetY: 183.4 }
+                        { id: 'l2-q18-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 190, targetY: 280 },
+                        { id: 'l2-q18-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 280 },
+                        { id: 'l2-q18-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 470, targetY: 280 },
+                        { id: 'l2-q18-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 210, targetY: 180 },
+                        { id: 'l2-q18-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 180 },
+                        { id: 'l2-q18-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 490, targetY: 180 },
+                        { id: 'l2-q18-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 210, targetY: 93.4 },
+                        { id: 'l2-q18-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 93.4 },
+                        { id: 'l2-q18-eq3', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 490, targetY: 93.4 }
+                    ]
+                },
+                { // 第19問: きょだいなはし
+                    showLines: false,
+                    pieces: [
+                        { id: 'l2-q19-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 190, targetY: 250 },
+                        { id: 'l2-q19-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 250 },
+                        { id: 'l2-q19-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 510, targetY: 250 },
+                        { id: 'l2-q19-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 170, targetY: 180 },
+                        { id: 'l2-q19-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 180 },
+                        { id: 'l2-q19-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 490, targetY: 180 },
+                        { id: 'l2-q19-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 190, targetY: 93.4 },
+                        { id: 'l2-q19-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 93.4 },
+                        { id: 'l2-q19-eq3', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 510, targetY: 93.4 }
+                    ]
+                },
+                { // 第20問: おやこガメ
+                    showLines: false,
+                    pieces: [
+                        { id: 'l2-q20-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 250, targetY: 250 },
+                        { id: 'l2-q20-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 390, targetY: 250 },
+                        { id: 'l2-q20-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 180, targetY: 250 },
+                        { id: 'l2-q20-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 510, targetY: 250 },
+                        { id: 'l2-q20-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 330, targetY: 150 },
+                        { id: 'l2-q20-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 280, targetY: 163.4 },
+                        { id: 'l2-q20-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 380, targetY: 163.4 },
+                        { id: 'l2-q20-eq3', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 430, targetY: 163.4 },
+                        { id: 'l2-q20-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 310, targetY: 320 },
+                        { id: 'l2-q20-sq4', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 50 }
+                    ]
+                },
+                { // 第21問: ロケットのきち
+                    showLines: false,
+                    pieces: [
+                        { id: 'l2-q21-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 190, targetY: 280 },
+                        { id: 'l2-q21-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 280 },
+                        { id: 'l2-q21-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 470, targetY: 280 },
+                        { id: 'l2-q21-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 210, targetY: 180 },
+                        { id: 'l2-q21-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 490, targetY: 180 },
+                        { id: 'l2-q21-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 180 },
+                        { id: 'l2-q21-sq4', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 80 },
+                        { id: 'l2-q21-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: -6.6 },
+                        { id: 'l2-q21-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 210, targetY: 93.4 },
+                        { id: 'l2-q21-eq3', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 490, targetY: 93.4 }
+                    ]
+                },
+                { // 第22問: ピラミッド
+                    showLines: false,
+                    pieces: [
+                        { id: 'l2-q22-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 160, targetY: 300 },
+                        { id: 'l2-q22-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 300, targetY: 300 },
+                        { id: 'l2-q22-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 440, targetY: 300 },
+                        { id: 'l2-q22-rect4', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 230, targetY: 230 },
+                        { id: 'l2-q22-rect5', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 370, targetY: 230 },
+                        { id: 'l2-q22-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 250, targetY: 130 },
+                        { id: 'l2-q22-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 450, targetY: 130 },
+                        { id: 'l2-q22-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 130 },
+                        { id: 'l2-q22-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 43.4 },
+                        { id: 'l2-q22-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 250, targetY: 43.4 }
+                    ]
+                },
+                { // 第23問: きょだいジェットき
+                    showLines: false,
+                    pieces: [
+                        { id: 'l2-q23-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 100 },
+                        { id: 'l2-q23-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 200 },
+                        { id: 'l2-q23-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 300 },
+                        { id: 'l2-q23-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 13.4 },
+                        { id: 'l2-q23-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 210, targetY: 200 },
+                        { id: 'l2-q23-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 450, targetY: 200 },
+                        { id: 'l2-q23-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 140, targetY: 200 },
+                        { id: 'l2-q23-eq3', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 610, targetY: 200 },
+                        { id: 'l2-q23-eq4', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 210, targetY: 340 },
+                        { id: 'l2-q23-eq5', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 540, targetY: 340 }
+                    ]
+                },
+                { // 第24問: おおきなきょうりゅう
+                    showLines: false,
+                    pieces: [
+                        { id: 'l2-q24-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 210, targetY: 300 },
+                        { id: 'l2-q24-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 490, targetY: 300 },
+                        { id: 'l2-q24-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 190, targetY: 230 },
+                        { id: 'l2-q24-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 230 },
+                        { id: 'l2-q24-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 470, targetY: 230 },
+                        { id: 'l2-q24-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 170, targetY: 130 },
+                        { id: 'l2-q24-sq4', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 510, targetY: 130 },
+                        { id: 'l2-q24-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 170, targetY: 43.4 },
+                        { id: 'l2-q24-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 510, targetY: 43.4 },
+                        { id: 'l2-q24-eq3', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 143.4 }
+                    ]
+                },
+                { // 第25問: きょだいかんらんしゃ
+                    showLines: false,
+                    pieces: [
+                        { id: 'l2-q25-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 260, targetY: 330 },
+                        { id: 'l2-q25-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 400, targetY: 330 },
+                        { id: 'l2-q25-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 230, targetY: 230 },
+                        { id: 'l2-q25-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 470, targetY: 230 },
+                        { id: 'l2-q25-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 260, targetY: 160 },
+                        { id: 'l2-q25-rect4', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 400, targetY: 160 },
+                        { id: 'l2-q25-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 160 },
+                        { id: 'l2-q25-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 73.4 },
+                        { id: 'l2-q25-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 200, targetY: 230 },
+                        { id: 'l2-q25-eq3', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 500, targetY: 230 }
+                    ]
+                },
+                { // 第26問: ごうかなおしろ
+                    showLines: false,
+                    pieces: [
+                        { id: 'l2-q26-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 190, targetY: 300 },
+                        { id: 'l2-q26-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 300 },
+                        { id: 'l2-q26-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 470, targetY: 300 },
+                        { id: 'l2-q26-rect4', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 260, targetY: 230 },
+                        { id: 'l2-q26-rect5', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 400, targetY: 230 },
+                        { id: 'l2-q26-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 210, targetY: 130 },
+                        { id: 'l2-q26-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 130 },
+                        { id: 'l2-q26-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 490, targetY: 130 },
+                        { id: 'l2-q26-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 210, targetY: 43.4 },
+                        { id: 'l2-q26-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 490, targetY: 43.4 }
+                    ]
+                },
+                { // 第27問: きょだいマンモス
+                    showLines: false,
+                    pieces: [
+                        { id: 'l2-q27-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 190, targetY: 280 },
+                        { id: 'l2-q27-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 280 },
+                        { id: 'l2-q27-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 210, targetY: 180 },
+                        { id: 'l2-q27-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 450, targetY: 180 },
+                        { id: 'l2-q27-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 330, targetY: 180 },
+                        { id: 'l2-q27-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 520, targetY: 210 },
+                        { id: 'l2-q27-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 520, targetY: 123.4 },
+                        { id: 'l2-q27-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 210, targetY: 93.4 },
+                        { id: 'l2-q27-eq3', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 450, targetY: 93.4 },
+                        { id: 'l2-q27-eq4', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 330, targetY: 93.4 }
                     ]
                 }
             ],
-            3: [ 
-                { // 第1問: おおきないえ (6ピース)
+            3: [
+                { // 第1問: おおきないえ
                     showLines: false,
                     pieces: [
-                        { id: 'l3-q1-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 260, targetY: 250 },
-                        { id: 'l3-q1-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 400, targetY: 250 },
-                        { id: 'l3-q1-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 260, targetY: 210 },
-                        { id: 'l3-q1-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 400, targetY: 210 },
-                        { id: 'l3-q1-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 110 },
-                        { id: 'l3-q1-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 23.4 }
+                        { id: 'l3-q1-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 190, targetY: 230 },
+                        { id: 'l3-q1-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 190, targetY: 190 },
+                        { id: 'l3-q1-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 470, targetY: 230 },
+                        { id: 'l3-q1-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 470, targetY: 190 },
+                        { id: 'l3-q1-sq', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 200 },
+                        { id: 'l3-q1-eq', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 113.4 }
                     ]
                 },
-                { // 第2問: UFO (ゆうふぉー) (7ピース)
+                { // 第2問: UFO
                     showLines: false,
                     pieces: [
-                        { id: 'l3-q2-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 200 },
-                        { id: 'l3-q2-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 330, targetY: 160 },
-                        { id: 'l3-q2-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 190, targetY: 200 },
-                        { id: 'l3-q2-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 190, targetY: 160 },
-                        { id: 'l3-q2-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 470, targetY: 200 },
-                        { id: 'l3-q2-iso3', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 470, targetY: 160 },
-                        { id: 'l3-q2-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 270 }
+                        { id: 'l3-q2-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 190, targetY: 230 },
+                        { id: 'l3-q2-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 190, targetY: 270 },
+                        { id: 'l3-q2-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 230 },
+                        { id: 'l3-q2-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 330, targetY: 270 },
+                        { id: 'l3-q2-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 470, targetY: 230 },
+                        { id: 'l3-q2-iso3', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 470, targetY: 270 },
+                        { id: 'l3-q2-sq', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 130 }
                     ]
                 },
-                { // 第3問: おしろのげーと (8ピース)
+                { // 第3問: おしろのげーと
                     showLines: false,
                     pieces: [
-                        { id: 'l3-q3-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 230, targetY: 250 },
-                        { id: 'l3-q3-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 230, targetY: 150 },
-                        { id: 'l3-q3-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 230, targetY: 63.4 },
-                        { id: 'l3-q3-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 470, targetY: 250 },
-                        { id: 'l3-q3-sq4', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 470, targetY: 150 },
-                        { id: 'l3-q3-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 470, targetY: 63.4 },
-                        { id: 'l3-q3-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 180 },
-                        { id: 'l3-q3-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 330, targetY: 140 }
+                        { id: 'l3-q3-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 180, targetY: 220 },
+                        { id: 'l3-q3-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 180, targetY: 133.4 },
+                        { id: 'l3-q3-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 520, targetY: 220 },
+                        { id: 'l3-q3-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 520, targetY: 133.4 },
+                        { id: 'l3-q3-rect', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 250 },
+                        { id: 'l3-q3-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 160, targetY: 320 },
+                        { id: 'l3-q3-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 330, targetY: 210 },
+                        { id: 'l3-q3-iso3', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 500, targetY: 320 }
                     ]
                 },
-                { // 第4問: ロケット (7ピース)
+                { // 第4問: ロケット
                     showLines: false,
                     pieces: [
-                        { id: 'l3-q4-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 13.4 },
-                        { id: 'l3-q4-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 100 },
-                        { id: 'l3-q4-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 200 },
-                        { id: 'l3-q4-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 300 },
-                        { id: 'l3-q4-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 370 },
-                        { id: 'l3-q4-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 190, targetY: 330 },
-                        { id: 'l3-q4-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 470, targetY: 330 }
+                        { id: 'l3-q4-rect', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 280 },
+                        { id: 'l3-q4-sq', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 180 },
+                        { id: 'l3-q4-eq', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 93.4 },
+                        { id: 'l3-q4-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 190, targetY: 240 },
+                        { id: 'l3-q4-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 470, targetY: 240 },
+                        { id: 'l3-q4-iso3', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 190, targetY: 280 },
+                        { id: 'l3-q4-iso4', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 470, targetY: 280 }
                     ]
                 },
-                { // 第5問: しんでん (9ピース)
+                { // 第5問: しんでん
                     showLines: false,
                     pieces: [
-                        { id: 'l3-q5-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 190, targetY: 300 },
-                        { id: 'l3-q5-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 300 },
-                        { id: 'l3-q5-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 470, targetY: 300 },
+                        { id: 'l3-q5-rect', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 300 },
                         { id: 'l3-q5-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 210, targetY: 200 },
                         { id: 'l3-q5-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 200 },
                         { id: 'l3-q5-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 490, targetY: 200 },
                         { id: 'l3-q5-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 190, targetY: 160 },
                         { id: 'l3-q5-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 330, targetY: 160 },
-                        { id: 'l3-q5-iso3', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 470, targetY: 160 }
+                        { id: 'l3-q5-iso3', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 470, targetY: 160 },
+                        { id: 'l3-q5-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 280, targetY: 73.4 },
+                        { id: 'l3-q5-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 420, targetY: 73.4 }
                     ]
                 },
-                { // 第6問: おうかん (7ピース)
+                { // 第6問: おうかん
                     showLines: false,
                     pieces: [
-                        { id: 'l3-q6-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 190, targetY: 300 },
-                        { id: 'l3-q6-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 300 },
-                        { id: 'l3-q6-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 470, targetY: 300 },
-                        { id: 'l3-q6-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 190, targetY: 260 },
-                        { id: 'l3-q6-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 470, targetY: 260 },
-                        { id: 'l3-q6-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 200 },
-                        { id: 'l3-q6-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 113.4 }
+                        { id: 'l3-q6-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 190, targetY: 250 },
+                        { id: 'l3-q6-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 250 },
+                        { id: 'l3-q6-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 470, targetY: 250 },
+                        { id: 'l3-q6-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 190, targetY: 210 },
+                        { id: 'l3-q6-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 470, targetY: 210 },
+                        { id: 'l3-q6-sq', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 150 },
+                        { id: 'l3-q6-eq', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 63.4 }
                     ]
                 },
-                { // 第7問: ブルドーザー (8ピース)
+                { // 第7問: ブルドーザー
                     showLines: false,
                     pieces: [
-                        { id: 'l3-q7-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 260, targetY: 300 },
-                        { id: 'l3-q7-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 400, targetY: 300 },
-                        { id: 'l3-q7-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 300, targetY: 200 },
-                        { id: 'l3-q7-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 400, targetY: 200 },
-                        { id: 'l3-q7-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 300, targetY: 113.4 },
-                        { id: 'l3-q7-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 400, targetY: 160 },
-                        { id: 'l3-q7-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 120, targetY: 300 },
-                        { id: 'l3-q7-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 120, targetY: 260 }
+                        { id: 'l3-q7-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 280, targetY: 250 },
+                        { id: 'l3-q7-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 420, targetY: 250 },
+                        { id: 'l3-q7-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 280, targetY: 210 },
+                        { id: 'l3-q7-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 420, targetY: 210 },
+                        { id: 'l3-q7-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 210, targetY: 220 },
+                        { id: 'l3-q7-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 490, targetY: 220 },
+                        { id: 'l3-q7-eq', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 140, targetY: 233.4 },
+                        { id: 'l3-q7-iso3', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 140, targetY: 193.4 }
                     ]
                 },
-                { // 第8問: ツインタワー (8ピース)
+                { // 第8問: ツインタワー
                     showLines: false,
                     pieces: [
-                        { id: 'l3-q8-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 260, targetY: 300 },
-                        { id: 'l3-q8-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 400, targetY: 300 },
-                        { id: 'l3-q8-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 260, targetY: 260 },
-                        { id: 'l3-q8-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 400, targetY: 260 },
-                        { id: 'l3-q8-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 280, targetY: 160 },
-                        { id: 'l3-q8-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 380, targetY: 160 },
-                        { id: 'l3-q8-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 280, targetY: 73.4 },
-                        { id: 'l3-q8-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 380, targetY: 73.4 }
+                        { id: 'l3-q8-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 190, targetY: 280 },
+                        { id: 'l3-q8-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 470, targetY: 280 },
+                        { id: 'l3-q8-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 190, targetY: 240 },
+                        { id: 'l3-q8-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 470, targetY: 240 },
+                        { id: 'l3-q8-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 210, targetY: 140 },
+                        { id: 'l3-q8-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 490, targetY: 140 },
+                        { id: 'l3-q8-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 210, targetY: 53.4 },
+                        { id: 'l3-q8-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 490, targetY: 53.4 }
                     ]
                 },
-                { // 第9問: うちゅうせん (9ピース)
+                { // 第9問: うちゅうせん
                     showLines: false,
                     pieces: [
-                        { id: 'l3-q9-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 300 },
-                        { id: 'l3-q9-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 230 },
-                        { id: 'l3-q9-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 330, targetY: 190 },
-                        { id: 'l3-q9-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 230, targetY: 300 },
-                        { id: 'l3-q9-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 470, targetY: 300 },
-                        { id: 'l3-q9-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 230, targetY: 213.4 },
-                        { id: 'l3-q9-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 470, targetY: 213.4 },
-                        { id: 'l3-q9-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 90 },
-                        { id: 'l3-q9-eq3', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 3.4 }
+                        { id: 'l3-q9-rect', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 230 },
+                        { id: 'l3-q9-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 190, targetY: 230 },
+                        { id: 'l3-q9-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 470, targetY: 230 },
+                        { id: 'l3-q9-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 230, targetY: 130 },
+                        { id: 'l3-q9-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 470, targetY: 130 },
+                        { id: 'l3-q9-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 230, targetY: 43.4 },
+                        { id: 'l3-q9-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 470, targetY: 43.4 },
+                        { id: 'l3-q9-eq3', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 143.4 },
+                        { id: 'l3-q9-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 300 }
                     ]
                 },
-                { // 第10問: おおきなきゅうでん (10ピース)
+                { // 第10問: おおきなきゅうでん
                     showLines: false,
                     pieces: [
                         { id: 'l3-q10-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 190, targetY: 300 },
@@ -636,355 +904,442 @@
                         { id: 'l3-q10-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 210, targetY: 200 },
                         { id: 'l3-q10-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 200 },
                         { id: 'l3-q10-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 490, targetY: 200 },
-                        { id: 'l3-q10-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 190, targetY: 160 },
-                        { id: 'l3-q10-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 330, targetY: 160 },
-                        { id: 'l3-q10-iso3', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 470, targetY: 160 },
-                        { id: 'l3-q10-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 73.4 }
+                        { id: 'l3-q10-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 210, targetY: 160 },
+                        { id: 'l3-q10-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 350, targetY: 160 },
+                        { id: 'l3-q10-iso3', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 490, targetY: 160 },
+                        { id: 'l3-q10-eq', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 73.4 }
                     ]
                 },
-                { // 第11問: ドラゴン (10ピース)
+                { // 第11問: ドラゴン
                     showLines: false,
                     pieces: [
-                        { id: 'l3-q11-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 250, targetY: 250 },
-                        { id: 'l3-q11-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 390, targetY: 250 },
-                        { id: 'l3-q11-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 110, targetY: 250 },
-                        { id: 'l3-q11-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 250, targetY: 320 },
-                        { id: 'l3-q11-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 430, targetY: 320 },
-                        { id: 'l3-q11-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 110, targetY: 210 },
-                        { id: 'l3-q11-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 390, targetY: 150 },
-                        { id: 'l3-q11-rect4', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 490, targetY: 150 },
-                        { id: 'l3-q11-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 510, targetY: 63.4 },
-                        { id: 'l3-q11-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 270, targetY: 163.4 }
+                        { id: 'l3-q11-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 210, targetY: 280 },
+                        { id: 'l3-q11-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 350, targetY: 280 },
+                        { id: 'l3-q11-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 180, targetY: 180 },
+                        { id: 'l3-q11-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 490, targetY: 210 },
+                        { id: 'l3-q11-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 180 },
+                        { id: 'l3-q11-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 250, targetY: 93.4 },
+                        { id: 'l3-q11-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 390, targetY: 93.4 },
+                        { id: 'l3-q11-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 110, targetY: 280 },
+                        { id: 'l3-q11-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 570, targetY: 210 },
+                        { id: 'l3-q11-eq3', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 110, targetY: 193.4 }
                     ]
                 },
-                { // 第12問: スーパーロボット (10ピース)
+                { // 第12問: スーパーロボット
                     showLines: false,
                     pieces: [
-                        { id: 'l3-q12-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 210, targetY: 350 },
-                        { id: 'l3-q12-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 490, targetY: 350 },
-                        { id: 'l3-q12-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 190, targetY: 280 },
-                        { id: 'l3-q12-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 470, targetY: 280 },
-                        { id: 'l3-q12-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 280 },
-                        { id: 'l3-q12-rect4', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 210 },
-                        { id: 'l3-q12-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 190, targetY: 240 },
-                        { id: 'l3-q12-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 470, targetY: 240 },
-                        { id: 'l3-q12-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 110 },
-                        { id: 'l3-q12-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 23.4 }
+                        { id: 'l3-q12-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 280, targetY: 300 },
+                        { id: 'l3-q12-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 420, targetY: 300 },
+                        { id: 'l3-q12-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 230 },
+                        { id: 'l3-q12-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 160 },
+                        { id: 'l3-q12-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 60 },
+                        { id: 'l3-q12-eq', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: -26.6 },
+                        { id: 'l3-q12-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 190, targetY: 160 },
+                        { id: 'l3-q12-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 470, targetY: 160 },
+                        { id: 'l3-q12-iso3', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 190, targetY: 200 },
+                        { id: 'l3-q12-iso4', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 470, targetY: 200 }
                     ]
                 },
-                { // 第13問: きょだいせんとうき (10ピース)
+                { // 第13問: きょだいせんとうき
                     showLines: false,
                     pieces: [
-                        { id: 'l3-q13-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 13.4 },
-                        { id: 'l3-q13-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 100 },
-                        { id: 'l3-q13-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 200 },
-                        { id: 'l3-q13-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 300 },
-                        { id: 'l3-q13-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 210, targetY: 230 },
-                        { id: 'l3-q13-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 450, targetY: 230 },
-                        { id: 'l3-q13-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 210, targetY: 190 },
-                        { id: 'l3-q13-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 450, targetY: 190 },
-                        { id: 'l3-q13-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 110, targetY: 230 },
-                        { id: 'l3-q13-sq4', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 590, targetY: 230 }
+                        { id: 'l3-q13-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 150 },
+                        { id: 'l3-q13-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 250 },
+                        { id: 'l3-q13-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 63.4 },
+                        { id: 'l3-q13-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 210, targetY: 200 },
+                        { id: 'l3-q13-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 450, targetY: 200 },
+                        { id: 'l3-q13-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 70, targetY: 200 },
+                        { id: 'l3-q13-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 590, targetY: 200 },
+                        { id: 'l3-q13-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 250, targetY: 330 },
+                        { id: 'l3-q13-sq4', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 450, targetY: 330 },
+                        { id: 'l3-q13-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 350 }
                     ]
                 },
-                { // 第14問: くわがたむし (10ピース)
+                { // 第14問: くわがたむし
                     showLines: false,
                     pieces: [
-                        { id: 'l3-q14-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 180 },
-                        { id: 'l3-q14-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 250 },
-                        { id: 'l3-q14-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 350 },
-                        { id: 'l3-q14-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 450 },
-                        { id: 'l3-q14-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 210, targetY: 250 },
-                        { id: 'l3-q14-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 450, targetY: 250 },
-                        { id: 'l3-q14-iso3', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 210, targetY: 310 },
-                        { id: 'l3-q14-iso4', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 450, targetY: 310 },
-                        { id: 'l3-q14-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 260, targetY: 93.4 },
-                        { id: 'l3-q14-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 440, targetY: 93.4 }
+                        { id: 'l3-q14-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 250 },
+                        { id: 'l3-q14-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 150 },
+                        { id: 'l3-q14-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 320 },
+                        { id: 'l3-q14-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 190, targetY: 250 },
+                        { id: 'l3-q14-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 470, targetY: 250 },
+                        { id: 'l3-q14-iso3', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 190, targetY: 290 },
+                        { id: 'l3-q14-iso4', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 470, targetY: 290 },
+                        { id: 'l3-q14-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 280, targetY: 80 },
+                        { id: 'l3-q14-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 380, targetY: 80 },
+                        { id: 'l3-q14-eq', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: -6.6 }
                     ]
                 },
-                { // 第15問: でんせつのとり (10ピース)
+                { // 第15問: でんせつのとり
                     showLines: false,
                     pieces: [
-                        { id: 'l3-q15-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 200 },
-                        { id: 'l3-q15-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 190, targetY: 200 },
-                        { id: 'l3-q15-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 470, targetY: 200 },
-                        { id: 'l3-q15-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 100 },
-                        { id: 'l3-q15-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 13.4 },
-                        { id: 'l3-q15-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 170, targetY: 160 },
-                        { id: 'l3-q15-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 490, targetY: 160 },
-                        { id: 'l3-q15-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 270 },
-                        { id: 'l3-q15-iso3', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 210, targetY: 270 },
-                        { id: 'l3-q15-iso4', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 450, targetY: 270 }
+                        { id: 'l3-q15-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 180 },
+                        { id: 'l3-q15-eq', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 93.4 },
+                        { id: 'l3-q15-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 190, targetY: 200 },
+                        { id: 'l3-q15-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 470, targetY: 200 },
+                        { id: 'l3-q15-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 50, targetY: 200 },
+                        { id: 'l3-q15-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 610, targetY: 200 },
+                        { id: 'l3-q15-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 280 },
+                        { id: 'l3-q15-iso3', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 190, targetY: 270 },
+                        { id: 'l3-q15-iso4', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 470, targetY: 270 },
+                        { id: 'l3-q15-iso5', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 330, targetY: 380 }
                     ]
                 },
-                { // 第16問: おおきなかぶとむし (10ピース)
+                { // 第16問: おおきなかぶとむし
                     showLines: false,
                     pieces: [
                         { id: 'l3-q16-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 250 },
-                        { id: 'l3-q16-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 320 },
                         { id: 'l3-q16-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 150 },
-                        { id: 'l3-q16-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 250, targetY: 150 },
-                        { id: 'l3-q16-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 450, targetY: 150 },
-                        { id: 'l3-q16-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 63.4 },
-                        { id: 'l3-q16-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 190, targetY: 250 },
-                        { id: 'l3-q16-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 470, targetY: 250 },
-                        { id: 'l3-q16-iso3', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 190, targetY: 320 },
-                        { id: 'l3-q16-iso4', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 470, targetY: 320 }
+                        { id: 'l3-q16-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 190, targetY: 230 },
+                        { id: 'l3-q16-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 470, targetY: 230 },
+                        { id: 'l3-q16-iso3', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 190, targetY: 280 },
+                        { id: 'l3-q16-iso4', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 470, targetY: 280 },
+                        { id: 'l3-q16-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 320 },
+                        { id: 'l3-q16-eq', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 63.4 },
+                        { id: 'l3-q16-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 420 },
+                        { id: 'l3-q16-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 490 }
                     ]
                 },
-                { // 第17問: かいぞくせん (10ピース)
+                { // 第17問: かいぞくせん
                     showLines: false,
                     pieces: [
-                        { id: 'l3-q17-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 260, targetY: 300 },
-                        { id: 'l3-q17-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 400, targetY: 300 },
-                        { id: 'l3-q17-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 120, targetY: 330 },
-                        { id: 'l3-q17-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 540, targetY: 330 },
-                        { id: 'l3-q17-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 260, targetY: 230 },
-                        { id: 'l3-q17-rect4', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 400, targetY: 230 },
-                        { id: 'l3-q17-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 280, targetY: 130 },
-                        { id: 'l3-q17-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 420, targetY: 130 },
-                        { id: 'l3-q17-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 280, targetY: 43.4 },
-                        { id: 'l3-q17-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 420, targetY: 43.4 }
+                        { id: 'l3-q17-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 300 },
+                        { id: 'l3-q17-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 190, targetY: 300 },
+                        { id: 'l3-q17-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 470, targetY: 300 },
+                        { id: 'l3-q17-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 250, targetY: 200 },
+                        { id: 'l3-q17-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 450, targetY: 200 },
+                        { id: 'l3-q17-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 250, targetY: 113.4 },
+                        { id: 'l3-q17-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 450, targetY: 113.4 },
+                        { id: 'l3-q17-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 190, targetY: 230 },
+                        { id: 'l3-q17-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 470, targetY: 230 },
+                        { id: 'l3-q17-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 300 }
                     ]
                 },
-                { // 第18問: ちていせんしゃ (10ピース)
+                { // 第18問: ちていせんしゃ
                     showLines: false,
                     pieces: [
-                        { id: 'l3-q18-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 20 },
-                        { id: 'l3-q18-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 106.6 },
-                        { id: 'l3-q18-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 206.6 },
-                        { id: 'l3-q18-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 306.6 },
-                        { id: 'l3-q18-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 190, targetY: 306.6 },
-                        { id: 'l3-q18-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 470, targetY: 306.6 },
-                        { id: 'l3-q18-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 190, targetY: 266.6 },
-                        { id: 'l3-q18-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 470, targetY: 266.6 },
-                        { id: 'l3-q18-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 210, targetY: 376.6 },
-                        { id: 'l3-q18-sq4', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 490, targetY: 376.6 }
+                        { id: 'l3-q18-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 250 },
+                        { id: 'l3-q18-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 150 },
+                        { id: 'l3-q18-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 63.4 },
+                        { id: 'l3-q18-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 190, targetY: 250 },
+                        { id: 'l3-q18-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 470, targetY: 250 },
+                        { id: 'l3-q18-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 230, targetY: 250 },
+                        { id: 'l3-q18-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 470, targetY: 250 },
+                        { id: 'l3-q18-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 320 },
+                        { id: 'l3-q18-sq4', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 390 },
+                        { id: 'l3-q18-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 476.6 }
+                    ]
+                },
+                { // 第19問: きょだいクモ
+                    showLines: false,
+                    pieces: [
+                        { id: 'l3-q19-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 200 },
+                        { id: 'l3-q19-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 300 },
+                        { id: 'l3-q19-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 130 },
+                        { id: 'l3-q19-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 190, targetY: 200 },
+                        { id: 'l3-q19-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 470, targetY: 200 },
+                        { id: 'l3-q19-iso3', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 190, targetY: 250 },
+                        { id: 'l3-q19-iso4', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 470, targetY: 250 },
+                        { id: 'l3-q19-iso5', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 190, targetY: 300 },
+                        { id: 'l3-q19-iso6', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 470, targetY: 300 },
+                        { id: 'l3-q19-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 43.4 }
+                    ]
+                },
+                { // 第20問: ごうかなヨット
+                    showLines: false,
+                    pieces: [
+                        { id: 'l3-q20-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 300 },
+                        { id: 'l3-q20-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 190, targetY: 300 },
+                        { id: 'l3-q20-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 470, targetY: 300 },
+                        { id: 'l3-q20-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 230 },
+                        { id: 'l3-q20-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 130 },
+                        { id: 'l3-q20-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 43.4 },
+                        { id: 'l3-q20-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 210, targetY: 200 },
+                        { id: 'l3-q20-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 210, targetY: 113.4 },
+                        { id: 'l3-q20-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 490, targetY: 200 },
+                        { id: 'l3-q20-eq3', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 490, targetY: 113.4 }
+                    ]
+                },
+                { // 第21問: うちゅうきち
+                    showLines: false,
+                    pieces: [
+                        { id: 'l3-q21-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 190, targetY: 280 },
+                        { id: 'l3-q21-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 280 },
+                        { id: 'l3-q21-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 470, targetY: 280 },
+                        { id: 'l3-q21-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 210, targetY: 180 },
+                        { id: 'l3-q21-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 490, targetY: 180 },
+                        { id: 'l3-q21-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 180 },
+                        { id: 'l3-q21-sq4', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 80 },
+                        { id: 'l3-q21-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: -6.6 },
+                        { id: 'l3-q21-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 190, targetY: 140 },
+                        { id: 'l3-q21-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 470, targetY: 140 }
+                    ]
+                },
+                { // 第22問: ピラミッドと神殿
+                    showLines: false,
+                    pieces: [
+                        { id: 'l3-q22-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 190, targetY: 300 },
+                        { id: 'l3-q22-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 300 },
+                        { id: 'l3-q22-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 470, targetY: 300 },
+                        { id: 'l3-q22-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 250, targetY: 200 },
+                        { id: 'l3-q22-rect4', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 350, targetY: 230 },
+                        { id: 'l3-q22-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 450, targetY: 200 },
+                        { id: 'l3-q22-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 210, targetY: 160 },
+                        { id: 'l3-q22-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 450, targetY: 160 },
+                        { id: 'l3-q22-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 130 },
+                        { id: 'l3-q22-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 43.4 }
+                    ]
+                },
+                { // 第23問: きょだいジェットき
+                    showLines: false,
+                    pieces: [
+                        { id: 'l3-q23-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 250 },
+                        { id: 'l3-q23-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 150 },
+                        { id: 'l3-q23-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 50 },
+                        { id: 'l3-q23-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: -36.6 },
+                        { id: 'l3-q23-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 190, targetY: 250 },
+                        { id: 'l3-q23-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 470, targetY: 250 },
+                        { id: 'l3-q23-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 190, targetY: 290 },
+                        { id: 'l3-q23-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 470, targetY: 290 },
+                        { id: 'l3-q23-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 320 },
+                        { id: 'l3-q23-iso3', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 330, targetY: 420 }
+                    ]
+                },
+                { // 第24問: おおきなきょうりゅう
+                    showLines: false,
+                    pieces: [
+                        { id: 'l3-q24-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 200, targetY: 300 },
+                        { id: 'l3-q24-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 450, targetY: 300 },
+                        { id: 'l3-q24-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 180, targetY: 230 },
+                        { id: 'l3-q24-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 320, targetY: 230 },
+                        { id: 'l3-q24-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 460, targetY: 230 },
+                        { id: 'l3-q24-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 180, targetY: 130 },
+                        { id: 'l3-q24-sq4', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 180, targetY: 30 },
+                        { id: 'l3-q24-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 180, targetY: -56.6 },
+                        { id: 'l3-q24-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 320, targetY: 190 },
+                        { id: 'l3-q24-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 460, targetY: 190 }
+                    ]
+                },
+                { // 第25問: まほうのおしろ
+                    showLines: false,
+                    pieces: [
+                        { id: 'l3-q25-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 190, targetY: 300 },
+                        { id: 'l3-q25-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 470, targetY: 300 },
+                        { id: 'l3-q25-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 250 },
+                        { id: 'l3-q25-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 210, targetY: 200 },
+                        { id: 'l3-q25-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 490, targetY: 200 },
+                        { id: 'l3-q25-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 150 },
+                        { id: 'l3-q25-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 190, targetY: 160 },
+                        { id: 'l3-q25-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 470, targetY: 160 },
+                        { id: 'l3-q25-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 63.4 },
+                        { id: 'l3-q25-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: -23.2 }
+                    ]
+                },
+                { // 第26問: とぶペガサス
+                    showLines: false,
+                    pieces: [
+                        { id: 'l3-q26-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 200 },
+                        { id: 'l3-q26-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 210, targetY: 230 },
+                        { id: 'l3-q26-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 210, targetY: 130 },
+                        { id: 'l3-q26-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 210, targetY: 43.4 },
+                        { id: 'l3-q26-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 190, targetY: 300 },
+                        { id: 'l3-q26-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 330, targetY: 300 },
+                        { id: 'l3-q26-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 450, targetY: 160 },
+                        { id: 'l3-q26-iso3', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 450, targetY: 120 },
+                        { id: 'l3-q26-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 590, targetY: 90 },
+                        { id: 'l3-q26-iso4', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 590, targetY: 50 }
+                    ]
+                },
+                { // 第27問: きょだいなふね
+                    showLines: false,
+                    pieces: [
+                        { id: 'l3-q27-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 260, targetY: 300 },
+                        { id: 'l3-q27-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 400, targetY: 300 },
+                        { id: 'l3-q27-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 120, targetY: 300 },
+                        { id: 'l3-q27-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 540, targetY: 300 },
+                        { id: 'l3-q27-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 210, targetY: 200 },
+                        { id: 'l3-q27-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 200 },
+                        { id: 'l3-q27-sq3', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 490, targetY: 200 },
+                        { id: 'l3-q27-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 210, targetY: 113.4 },
+                        { id: 'l3-q27-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 113.4 },
+                        { id: 'l3-q27-eq3', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 490, targetY: 113.4 }
                     ]
                 }
             ]
         };
 
-        const SNAP_DISTANCE = 30;
+        // --- 以下、システム制御・スナップロジック ---
+        let currentLevel = 1;
+        let currentQuestionIndex = 0;
+        let piecesLeft = 0;
+        let targetSlots = [];
 
         const screenTitle = document.getElementById('screen-title');
         const screenGame = document.getElementById('screen-game');
-        const levelDisplay = document.getElementById('current-level-display');
-        const svg = document.getElementById('game-svg');
         const silhouetteGroup = document.getElementById('silhouette-group');
         const piecesGroup = document.getElementById('pieces-group');
         const clearModal = document.getElementById('clear-modal');
-        const nextLevelBtn = document.getElementById('next-level-btn');
+        const levelDisplay = document.getElementById('current-level-display');
 
-        let currentLevel = 1;
-        let currentStageIndex = 0;
-        let pieces = [];
-        let targetSlots = []; 
-        let draggingPiece = null;
-        let offset = { x: 0, y: 0 };
-        let svgPoint = svg.createSVGPoint();
+        // レベル選択ボタンのイベント
+        document.getElementById('btn-level-1').onclick = () => startLevel(1);
+        document.getElementById('btn-level-2').onclick = () => startLevel(2);
+        document.getElementById('btn-level-3').onclick = () => startLevel(3);
 
-        function showTitleScreen() {
-            screenTitle.classList.remove('hidden');
+        // やめるボタン
+        document.getElementById('btn-quit').onclick = () => {
             screenGame.classList.add('hidden');
+            screenTitle.classList.remove('hidden');
             clearModal.classList.add('hidden');
-        }
+        };
 
-        function startGame(level) {
+        // スキップボタン / 次の問題ボタン
+        const advanceQuestion = () => {
+            clearModal.classList.add('hidden');
+            currentQuestionIndex++;
+            if (currentQuestionIndex < gameData[currentLevel].length) {
+                loadStage(currentLevel, currentQuestionIndex);
+            } else {
+                // 最終問題ならタイトルへ戻る
+                document.getElementById('btn-quit').click();
+            }
+        };
+        document.getElementById('btn-skip').onclick = advanceQuestion;
+        document.getElementById('next-level-btn').onclick = advanceQuestion;
+
+        function startLevel(level) {
             currentLevel = level;
-            currentStageIndex = 0;
+            currentQuestionIndex = 0;
             screenTitle.classList.add('hidden');
             screenGame.classList.remove('hidden');
-            loadStage();
+            loadStage(currentLevel, currentQuestionIndex);
         }
 
-        function nextStage() {
-            currentStageIndex++;
-            const currentLevelData = gameData[currentLevel];
-            
-            if (currentStageIndex >= currentLevelData.length) {
-                showTitleScreen();
-            } else {
-                loadStage();
-            }
-        }
-
-        function loadStage() {
-            clearModal.classList.add('hidden');
-            levelDisplay.textContent = `Level ${currentLevel} - Q${currentStageIndex + 1}`;
-            
+        function loadStage(level, index) {
+            const qData = gameData[level][index];
+            levelDisplay.textContent = `Level ${level} - Q${index + 1}`;
             silhouetteGroup.innerHTML = '';
             piecesGroup.innerHTML = '';
-            pieces = [];
-            targetSlots = []; 
-            draggingPiece = null;
-
-            const stageData = gameData[currentLevel][currentStageIndex];
-            const currentData = stageData.pieces;
-            const showLines = stageData.showLines;
-
-            const pieceCount = currentData.length;
             
-            // ピース数が多い場合は少し下から開始
-            const startY1 = pieceCount > 7 ? 460 : (pieceCount > 5 ? 450 : 430); 
-            const startY2 = pieceCount > 7 ? 550 : (pieceCount > 5 ? 540 : 530); 
-            const totalWidth = 800;
+            piecesLeft = qData.pieces.length;
+            
+            // 賢いスナップ用のターゲット枠を初期化（id, 形のパス, 座標, 使用済みフラグ）
+            targetSlots = qData.pieces.map(p => ({
+                id: p.id,
+                path: p.path,
+                targetX: p.targetX,
+                targetY: p.targetY,
+                isOccupied: false
+            }));
 
-            currentData.forEach((data, index) => {
-                targetSlots.push({
-                    path: data.path, 
-                    targetX: data.targetX,
-                    targetY: data.targetY,
-                    isOccupied: false
+            // シルエット（正解の枠）の描画
+            qData.pieces.forEach(p => {
+                const pathElement = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                pathElement.setAttribute('d', p.path);
+                pathElement.setAttribute('transform', `translate(${p.targetX}, ${p.targetY})`);
+                pathElement.setAttribute('class', qData.showLines ? 'silhouette' : 'silhouette-merged');
+                silhouetteGroup.appendChild(pathElement);
+            });
+
+            // ピース配列をランダムにシャッフルする
+            const shuffledPieces = [...qData.pieces].sort(() => Math.random() - 0.5);
+
+            // ピース（ドラッグ可能な図形）の描画
+            shuffledPieces.forEach((p, index) => {
+                const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+                g.setAttribute('class', 'draggable');
+                
+                // 動的配置（ピースが5個を超える場合は2段で配置）
+                const piecesCount = shuffledPieces.length;
+                let cols = piecesCount > 5 ? Math.ceil(piecesCount / 2) : piecesCount;
+                let row = Math.floor(index / cols);
+                let col = index % cols;
+                
+                // 画面幅（800）から等間隔に配置
+                const startX = (800 / (cols + 1)) * (col + 1) - 50; 
+                const startY = 440 + (row * 90);
+
+                g.setAttribute('transform', `translate(${startX}, ${startY})`);
+                g.dataset.path = p.path; // スナップ判定のために形(path)を記憶
+
+                const pathElement = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                pathElement.setAttribute('d', p.path);
+                pathElement.setAttribute('fill', p.color);
+                
+                g.appendChild(pathElement);
+                piecesGroup.appendChild(g);
+
+                // ドラッグ処理の変数
+                let isDragging = false;
+                let offset = { x: 0, y: 0 };
+                let currentTransform = { x: startX, y: startY };
+
+                g.addEventListener('pointerdown', (e) => {
+                    isDragging = true;
+                    const svg = document.getElementById('game-svg');
+                    const pt = svg.createSVGPoint();
+                    pt.x = e.clientX;
+                    pt.y = e.clientY;
+                    const cursorPt = pt.matrixTransform(svg.getScreenCTM().inverse());
+                    
+                    offset.x = cursorPt.x - currentTransform.x;
+                    offset.y = cursorPt.y - currentTransform.y;
+                    
+                    // タッチした図形を最前面へ移動
+                    piecesGroup.appendChild(g);
+                    g.setPointerCapture(e.pointerId);
                 });
 
-                const silEl = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-                silEl.setAttribute('d', data.path);
-                silEl.setAttribute('transform', `translate(${data.targetX}, ${data.targetY})`);
-                
-                if (showLines) {
-                    silEl.setAttribute('class', 'silhouette');
-                } else {
-                    silEl.setAttribute('class', 'silhouette-merged');
-                }
-                silhouetteGroup.appendChild(silEl);
+                g.addEventListener('pointermove', (e) => {
+                    if (!isDragging) return;
+                    e.preventDefault(); // スクロール防止
+                    
+                    const svg = document.getElementById('game-svg');
+                    const pt = svg.createSVGPoint();
+                    pt.x = e.clientX;
+                    pt.y = e.clientY;
+                    const cursorPt = pt.matrixTransform(svg.getScreenCTM().inverse());
+                    
+                    currentTransform.x = cursorPt.x - offset.x;
+                    currentTransform.y = cursorPt.y - offset.y;
+                    g.setAttribute('transform', `translate(${currentTransform.x}, ${currentTransform.y})`);
+                });
 
-                let row = 1;
-                let colsInRow = pieceCount;
-                let colIndex = index;
+                g.addEventListener('pointerup', (e) => {
+                    if (!isDragging) return;
+                    isDragging = false;
+                    g.releasePointerCapture(e.pointerId);
 
-                if (pieceCount > 5) {
-                    const topCount = Math.ceil(pieceCount / 2);
-                    if (index < topCount) {
-                        row = 1;
-                        colsInRow = topCount;
-                        colIndex = index;
-                    } else {
-                        row = 2;
-                        colsInRow = pieceCount - topCount;
-                        colIndex = index - topCount;
+                    // 賢いスナップ判定 (同じ形で、まだ埋まっていない枠を探す)
+                    const snapDistance = 30; // 吸着する距離
+
+                    for (let slot of targetSlots) {
+                        if (!slot.isOccupied && slot.path === g.dataset.path) {
+                            const dx = currentTransform.x - slot.targetX;
+                            const dy = currentTransform.y - slot.targetY;
+                            const distance = Math.sqrt(dx * dx + dy * dy);
+
+                            if (distance < snapDistance) {
+                                // 吸着成功
+                                slot.isOccupied = true;
+                                g.setAttribute('transform', `translate(${slot.targetX}, ${slot.targetY})`);
+                                g.classList.remove('draggable');
+                                g.classList.add('snapped');
+                                piecesLeft--;
+
+                                // すべてハマったらクリアモーダル表示
+                                if (piecesLeft === 0) {
+                                    setTimeout(() => {
+                                        clearModal.classList.remove('hidden');
+                                    }, 400);
+                                }
+                                break; // 1つの枠に吸着したらループ終了
+                            }
+                        }
                     }
-                }
-
-                const spacing = totalWidth / (colsInRow + 1);
-                const pieceStartX = spacing * (colIndex + 1) - 50; 
-                const pieceStartY = row === 1 ? startY1 : startY2;
-
-                const pieceGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-                pieceGroup.setAttribute('id', `piece-${index}`);
-                pieceGroup.setAttribute('class', 'draggable');
-                pieceGroup.setAttribute('transform', `translate(${pieceStartX}, ${pieceStartY})`);
-                
-                const piecePath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-                piecePath.setAttribute('d', data.path);
-                piecePath.setAttribute('fill', data.color);
-                piecePath.setAttribute('stroke', 'rgba(0,0,0,0.1)');
-                piecePath.setAttribute('stroke-width', '2');
-                
-                pieceGroup.appendChild(piecePath);
-                piecesGroup.appendChild(pieceGroup);
-
-                const pieceState = {
-                    path: data.path, 
-                    element: pieceGroup,
-                    currentX: pieceStartX,
-                    currentY: pieceStartY,
-                    isSnapped: false
-                };
-                pieces.push(pieceState);
-
-                pieceGroup.addEventListener('pointerdown', (e) => onPointerDown(e, pieceState));
+                });
             });
         }
-
-        function getMousePosition(evt) {
-            svgPoint.x = evt.clientX;
-            svgPoint.y = evt.clientY;
-            return svgPoint.matrixTransform(svg.getScreenCTM().inverse());
-        }
-
-        function onPointerDown(e, pieceState) {
-            if (pieceState.isSnapped) return;
-            draggingPiece = pieceState;
-            const pointerPos = getMousePosition(e);
-            offset.x = pointerPos.x - pieceState.currentX;
-            offset.y = pointerPos.y - pieceState.currentY;
-            piecesGroup.appendChild(pieceState.element);
-            pieceState.element.setPointerCapture(e.pointerId);
-        }
-
-        function onPointerMove(e) {
-            if (!draggingPiece) return;
-            e.preventDefault();
-            const pointerPos = getMousePosition(e);
-            let newX = pointerPos.x - offset.x;
-            let newY = pointerPos.y - offset.y;
-            draggingPiece.currentX = newX;
-            draggingPiece.currentY = newY;
-            draggingPiece.element.setAttribute('transform', `translate(${newX}, ${newY})`);
-        }
-
-        function onPointerUp(e) {
-            if (!draggingPiece) return;
-            if (e.pointerId) {
-                draggingPiece.element.releasePointerCapture(e.pointerId);
-            }
-            checkSnap(draggingPiece);
-            draggingPiece = null;
-        }
-
-        function checkSnap(piece) {
-            let closestTarget = null;
-            let minDistance = SNAP_DISTANCE + 1;
-
-            for (const target of targetSlots) {
-                if (!target.isOccupied && target.path === piece.path) {
-                    const dx = target.targetX - piece.currentX;
-                    const dy = target.targetY - piece.currentY;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-
-                    if (distance < minDistance) {
-                        minDistance = distance;
-                        closestTarget = target;
-                    }
-                }
-            }
-
-            if (closestTarget && minDistance <= SNAP_DISTANCE) {
-                piece.currentX = closestTarget.targetX;
-                piece.currentY = closestTarget.targetY;
-                piece.element.setAttribute('transform', `translate(${closestTarget.targetX}, ${closestTarget.targetY})`);
-                
-                piece.isSnapped = true;
-                closestTarget.isOccupied = true; 
-                
-                piece.element.classList.remove('draggable');
-                piece.element.classList.add('snapped');
-                
-                checkWinCondition();
-            }
-        }
-
-        function checkWinCondition() {
-            if (pieces.every(p => p.isSnapped)) {
-                const currentLevelData = gameData[currentLevel];
-                if (currentStageIndex >= currentLevelData.length - 1) {
-                    nextLevelBtn.textContent = "レベルクリア！（タイトルへ）";
-                } else {
-                    nextLevelBtn.textContent = "次の問題へ";
-                }
-
-                setTimeout(() => {
-                    clearModal.classList.remove('hidden');
-                }, 300);
-            }
-        }
-
-        svg.addEventListener('pointermove', onPointerMove);
-        svg.addEventListener('pointerup', onPointerUp);
-        svg.addEventListener('pointercancel', onPointerUp);
-        svg.addEventListener('pointerleave', onPointerUp);
-
     </script>
 </body>
 </html>
