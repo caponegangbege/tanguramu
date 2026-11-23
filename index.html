@@ -75,8 +75,8 @@
                 <span class="text-sm font-normal opacity-80">［点線なし・全図形あり］</span>
             </button>
             <button id="btn-level-4" class="bg-purple-500 hover:bg-purple-400 text-white font-bold py-4 px-8 rounded-full shadow-xl text-xl transition-transform active:scale-95 flex flex-col items-center">
-                <span>レベル４ <span class="text-yellow-300">★新登場★</span></span>
-                <span class="text-sm font-normal opacity-80">［タップで回転・点線あり］</span>
+                <span>レベル４</span>
+                <span class="text-sm font-normal opacity-80">［かいてんあり（90度ずつ）］</span>
             </button>
         </div>
     </div>
@@ -122,6 +122,36 @@
             if (path.includes('L100,86.6')) return { cx: 50, cy: 57.7, sym: 360 }; // 正三角形
             if (path.includes('L140,40')) return { cx: 70, cy: 26.6, sym: 360 }; // 二等辺三角形
             return { cx: 50, cy: 50, sym: 360 };
+        }
+
+        // 回転後の図形の外接矩形（バウンディングボックス）を取得する関数
+        function getRotatedBounds(path, rot) {
+            const { cx, cy } = getShapeCenterAndSym(path);
+            const coords = path.match(/-?\d+(\.\d+)?/g).map(Number);
+            const rad = (rot * Math.PI) / 180;
+            const cos = Math.cos(rad);
+            const sin = Math.sin(rad);
+
+            let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+            for (let i = 0; i < coords.length; i += 2) {
+                const px = coords[i] - cx;
+                const py = coords[i + 1] - cy;
+                const rx = px * cos - py * sin + cx;
+                const ry = px * sin + py * cos + cy;
+                if (rx < minX) minX = rx;
+                if (rx > maxX) maxX = rx;
+                if (ry < minY) minY = ry;
+                if (ry > maxY) maxY = ry;
+            }
+            return { minX, maxX, minY, maxY };
+        }
+
+        // 図形全体が画面枠（800x600のSVG領域）の外に出ないよう座標を制限する関数
+        function clampPosition(x, y, path, rot) {
+            const { minX, maxX, minY, maxY } = getRotatedBounds(path, rot);
+            const clampedX = Math.max(-minX, Math.min(800 - maxX, x));
+            const clampedY = Math.max(-minY, Math.min(600 - maxY, y));
+            return { x: clampedX, y: clampedY };
         }
 
         // 問題データ (各レベルごとの配列)
@@ -1270,53 +1300,137 @@
                 }
             ],
             4: [
-                { // 第1問: おさかな（重なりなし・斜めと直角の組み合わせ）
+                { // 第1問: ロケット（90度回転の基本）
                     showLines: true,
                     pieces: [
-                        // 胴体（45度回転した正方形＝ひし形）
-                        { id: 'l4-q1-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 300, targetY: 180, targetRotation: 45 },
-                        // 背びれ（左上の斜辺にピタッと接する135度回転の二等辺三角形）
-                        { id: 'l4-q1-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 235.7, targetY: 179.3, targetRotation: 135 },
-                        // 腹びれ（左下の斜辺にピタッと接する45度回転の二等辺三角形）
-                        { id: 'l4-q1-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 235.7, targetY: 229.5, targetRotation: 45 },
-                        // 尾びれ上（90度回転して右向きになった正三角形）
-                        { id: 'l4-q1-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 429.4, targetY: 122.3, targetRotation: 90 },
-                        // 尾びれ下（270度回転して左向きになった正三角形）
-                        { id: 'l4-q1-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 458.2, targetY: 222.3, targetRotation: 270 }
+                        { id: 'l4-q1-rect', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 215, targetRotation: 90 },
+                        { id: 'l4-q1-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 93.4, targetRotation: 0 },
+                        { id: 'l4-q1-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 286.1, targetY: 212.3, targetRotation: 270 },
+                        { id: 'l4-q1-eq3', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 413.9, targetY: 212.3, targetRotation: 90 }
                     ]
                 },
-                { // 第2問: ふうしゃ（中央の正方形の4辺に回転した図形が接する）
+                { // 第2問: おさかな（180度・270度回転）
                     showLines: true,
                     pieces: [
-                        // 中心（正方形）
-                        { id: 'l4-q2-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 170, targetRotation: 0 },
-                        // 上の羽（0度・二等辺三角形）
-                        { id: 'l4-q2-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 330, targetY: 130, targetRotation: 0 },
-                        // 下の羽（180度回転・下向き二等辺三角形）
-                        { id: 'l4-q2-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 330, targetY: 283.2, targetRotation: 180 },
-                        // 左の羽（270度回転・左向き正三角形）
-                        { id: 'l4-q2-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 271.1, targetY: 162.3, targetRotation: 270 },
-                        // 右の羽（90度回転・右向き正三角形）
-                        { id: 'l4-q2-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 428.9, targetY: 162.3, targetRotation: 90 },
-                        // 持ち手（90度回転して縦長になった長方形）
-                        { id: 'l4-q2-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 465, targetY: 295, targetRotation: 90 }
+                        { id: 'l4-q2-sq', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 300, targetY: 180, targetRotation: 0 },
+                        { id: 'l4-q2-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 221.1, targetY: 172.3, targetRotation: 270 },
+                        { id: 'l4-q2-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 407.7, targetY: 172.3, targetRotation: 270 },
+                        { id: 'l4-q2-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 280, targetY: 140, targetRotation: 0 },
+                        { id: 'l4-q2-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 280, targetY: 266.8, targetRotation: 180 }
                     ]
                 },
-                { // 第3問: キャンディとリボン（90度・180度・270度・45度の組み合わせ）
+                { // 第3問: ちょうちょ（全方向の90度回転）
                     showLines: true,
                     pieces: [
-                        // 中央のキャンディ（45度回転した正方形）
-                        { id: 'l4-q3-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 150, targetRotation: 45 },
-                        // 左のリボン（90度回転して右を向いた正三角形・頂点がキャンディの左角に接する）
-                        { id: 'l4-q3-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 221.6, targetY: 142.3, targetRotation: 90 },
-                        // 右のリボン（270度回転して左を向いた正三角形・頂点がキャンディの右角に接する）
-                        { id: 'l4-q3-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 478.4, targetY: 142.3, targetRotation: 270 },
-                        // 下の台座（長方形・キャンディの下角に接する）
-                        { id: 'l4-q3-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 270.7, targetRotation: 0 },
-                        // 台座の左飾り（270度回転した二等辺三角形・長方形の左辺に接する）
-                        { id: 'l4-q3-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 233.4, targetY: 279.1, targetRotation: 270 },
-                        // 台座の右飾り（90度回転した二等辺三角形・長方形の右辺に接する）
-                        { id: 'l4-q3-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 426.6, targetY: 279.1, targetRotation: 90 }
+                        { id: 'l4-q3-rect', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 185, targetRotation: 90 },
+                        { id: 'l4-q3-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 34.6, targetRotation: 180 },
+                        { id: 'l4-q3-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 268.4, targetY: 153.4, targetRotation: 90 },
+                        { id: 'l4-q3-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 391.6, targetY: 153.4, targetRotation: 270 },
+                        { id: 'l4-q3-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 257.3, targetY: 232.3, targetRotation: 90 },
+                        { id: 'l4-q3-eq3', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 442.7, targetY: 232.3, targetRotation: 270 }
+                    ]
+                },
+                { // 第4問: ジェットき（4ピース）
+                    showLines: true,
+                    pieces: [
+                        { id: 'l4-q4-rect', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 165, targetRotation: 90 },
+                        { id: 'l4-q4-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 281.6, targetY: 173.4, targetRotation: 270 },
+                        { id: 'l4-q4-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 378.4, targetY: 173.4, targetRotation: 90 },
+                        { id: 'l4-q4-eq', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 241.2, targetRotation: 180 }
+                    ]
+                },
+                { // 第5問: ヨット（5ピース）
+                    showLines: true,
+                    pieces: [
+                        { id: 'l4-q5-sq', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 230, targetRotation: 0 },
+                        { id: 'l4-q5-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 271.1, targetY: 222.3, targetRotation: 270 },
+                        { id: 'l4-q5-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 428.9, targetY: 222.3, targetRotation: 90 },
+                        { id: 'l4-q5-rect', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 125, targetRotation: 90 },
+                        { id: 'l4-q5-iso', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 378.4, targetY: 133.4, targetRotation: 90 }
+                    ]
+                },
+                { // 第6問: ロボット（5ピース）
+                    showLines: true,
+                    pieces: [
+                        { id: 'l4-q6-iso', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 330, targetY: 70, targetRotation: 0 },
+                        { id: 'l4-q6-sq', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 110, targetRotation: 0 },
+                        { id: 'l4-q6-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 271.1, targetY: 102.3, targetRotation: 270 },
+                        { id: 'l4-q6-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 428.9, targetY: 102.3, targetRotation: 90 },
+                        { id: 'l4-q6-rect', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 245, targetRotation: 90 }
+                    ]
+                },
+                { // 第7問: スーパーロケット（6ピース）
+                    showLines: true,
+                    pieces: [
+                        { id: 'l4-q7-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 23.4, targetRotation: 0 },
+                        { id: 'l4-q7-sq', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 110, targetRotation: 0 },
+                        { id: 'l4-q7-rect', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 245, targetRotation: 90 },
+                        { id: 'l4-q7-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 281.6, targetY: 253.4, targetRotation: 270 },
+                        { id: 'l4-q7-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 378.4, targetY: 253.4, targetRotation: 90 },
+                        { id: 'l4-q7-iso3', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 330, targetY: 336.8, targetRotation: 180 }
+                    ]
+                },
+                { // 第8問: ヘリコプター（6ピース）
+                    showLines: true,
+                    pieces: [
+                        { id: 'l4-q8-sq', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 180, targetRotation: 0 },
+                        { id: 'l4-q8-eq', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 428.9, targetY: 172.3, targetRotation: 90 },
+                        { id: 'l4-q8-rect', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 210, targetY: 195, targetRotation: 0 },
+                        { id: 'l4-q8-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 126.6, targetY: 203.4, targetRotation: 270 },
+                        { id: 'l4-q8-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 295, targetY: 126.8, targetRotation: 180 },
+                        { id: 'l4-q8-iso3', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 435, targetY: 126.8, targetRotation: 180 }
+                    ]
+                },
+                { // 第9問: おおきなクジラ（7ピース）
+                    showLines: true,
+                    pieces: [
+                        { id: 'l4-q9-sq', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 180, targetRotation: 0 },
+                        { id: 'l4-q9-rect', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 415, targetY: 195, targetRotation: 90 },
+                        { id: 'l4-q9-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 498.9, targetY: 172.3, targetRotation: 90 },
+                        { id: 'l4-q9-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 93.4, targetRotation: 0 },
+                        { id: 'l4-q9-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 310, targetY: 266.8, targetRotation: 180 },
+                        { id: 'l4-q9-eq3', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 271.1, targetY: 172.3, targetRotation: 270 },
+                        { id: 'l4-q9-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 180, targetY: 203.4, targetRotation: 270 }
+                    ]
+                },
+                { // 第10問: ちょうとっきゅう（8ピース）
+                    showLines: true,
+                    pieces: [
+                        { id: 'l4-q10-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 485, targetY: 175, targetRotation: 90 },
+                        { id: 'l4-q10-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 533.4, targetY: 183.4, targetRotation: 90 },
+                        { id: 'l4-q10-sq', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 420, targetY: 180, targetRotation: 0 },
+                        { id: 'l4-q10-eq', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 420, targetY: 93.4, targetRotation: 0 },
+                        { id: 'l4-q10-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 280, targetY: 210, targetRotation: 0 },
+                        { id: 'l4-q10-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 280, targetY: 170, targetRotation: 0 },
+                        { id: 'l4-q10-rect3', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 140, targetY: 210, targetRotation: 0 },
+                        { id: 'l4-q10-iso3', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 140, targetY: 170, targetRotation: 0 }
+                    ]
+                },
+                { // 第11問: おおきなうちゅうせん（8ピース）
+                    showLines: true,
+                    pieces: [
+                        { id: 'l4-q11-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 13.4, targetRotation: 0 },
+                        { id: 'l4-q11-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 100, targetRotation: 0 },
+                        { id: 'l4-q11-sq2', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 200, targetRotation: 0 },
+                        { id: 'l4-q11-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 350, targetY: 271.2, targetRotation: 180 },
+                        { id: 'l4-q11-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 245, targetY: 165, targetRotation: 90 },
+                        { id: 'l4-q11-rect2', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 415, targetY: 165, targetRotation: 90 },
+                        { id: 'l4-q11-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 196.6, targetY: 173.4, targetRotation: 270 },
+                        { id: 'l4-q11-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 463.4, targetY: 173.4, targetRotation: 90 }
+                    ]
+                },
+                { // 第12問: きょだいロボット（9ピース）
+                    showLines: true,
+                    pieces: [
+                        { id: 'l4-q12-iso1', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 330, targetY: 20, targetRotation: 0 },
+                        { id: 'l4-q12-sq1', path: 'M0,0 L100,0 L100,100 L0,100 Z', color: '#ef4444', targetX: 350, targetY: 60, targetRotation: 0 },
+                        { id: 'l4-q12-eq1', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 271.1, targetY: 52.3, targetRotation: 270 },
+                        { id: 'l4-q12-eq2', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 428.9, targetY: 52.3, targetRotation: 90 },
+                        { id: 'l4-q12-rect1', path: 'M0,0 L140,0 L140,70 L0,70 Z', color: '#22c55e', targetX: 330, targetY: 195, targetRotation: 90 },
+                        { id: 'l4-q12-iso2', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 281.6, targetY: 203.4, targetRotation: 270 },
+                        { id: 'l4-q12-iso3', path: 'M70,0 L140,40 L0,40 Z', color: '#eab308', targetX: 378.4, targetY: 203.4, targetRotation: 90 },
+                        { id: 'l4-q12-eq3', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 295, targetY: 271.2, targetRotation: 180 },
+                        { id: 'l4-q12-eq4', path: 'M50,0 L100,86.6 L0,86.6 Z', color: '#3b82f6', targetX: 405, targetY: 271.2, targetRotation: 180 }
                     ]
                 }
             ]
@@ -1363,6 +1477,10 @@
         document.getElementById('next-level-btn').onclick = advanceQuestion;
 
         function startLevel(level) {
+            // 問題が存在しない場合はエラーを防ぐため遷移しない
+            if (!gameData[level] || gameData[level].length === 0) {
+                return;
+            }
             currentLevel = level;
             currentQuestionIndex = 0;
             screenTitle.classList.add('hidden');
@@ -1372,7 +1490,9 @@
 
         function loadStage(level, index) {
             const qData = gameData[level][index];
-            levelDisplay.textContent = `Level ${level} - Q${index + 1}`;
+            levelDisplay.textContent = level === 4 
+                ? `Level ${level} - Q${index + 1}（タップで90度かいてん）` 
+                : `Level ${level} - Q${index + 1}`;
             silhouetteGroup.innerHTML = '';
             piecesGroup.innerHTML = '';
             
@@ -1420,11 +1540,8 @@
                 const startX = (800 / (cols + 1)) * (col + 1) - 50; 
                 const startY = 440 + (row * 90);
 
-                // レベル4の場合は、初期状態をランダムな角度（45度刻み）に回しておく
+                // 生徒の混乱を防ぐため、すべてのレベルで初期角度は0度（通常の向き）からスタート
                 let currentRotation = 0;
-                if (level === 4) {
-                    currentRotation = Math.floor(Math.random() * 8) * 45;
-                }
                 const { cx, cy, sym } = getShapeCenterAndSym(p.path);
 
                 g.setAttribute('transform', `translate(${startX}, ${startY}) rotate(${currentRotation}, ${cx}, ${cy})`);
@@ -1445,6 +1562,7 @@
 
                 g.addEventListener('pointerdown', (e) => {
                     isDragging = true;
+                    g.style.transition = 'none'; // ドラッグ中は遅延なく指に追従させる
                     pointerDownPos = { x: e.clientX, y: e.clientY };
                     
                     const svg = document.getElementById('game-svg');
@@ -1471,8 +1589,14 @@
                     pt.y = e.clientY;
                     const cursorPt = pt.matrixTransform(svg.getScreenCTM().inverse());
                     
-                    currentTransform.x = cursorPt.x - offset.x;
-                    currentTransform.y = cursorPt.y - offset.y;
+                    const clamped = clampPosition(
+                        cursorPt.x - offset.x,
+                        cursorPt.y - offset.y,
+                        p.path,
+                        currentRotation
+                    );
+                    currentTransform.x = clamped.x;
+                    currentTransform.y = clamped.y;
                     g.setAttribute('transform', `translate(${currentTransform.x}, ${currentTransform.y}) rotate(${currentRotation}, ${cx}, ${cy})`);
                 });
 
@@ -1481,11 +1605,20 @@
                     isDragging = false;
                     g.releasePointerCapture(e.pointerId);
 
-                    // タップ判定（移動距離が非常に小さい場合は「タップされた」とみなして回転）
+                    // タップ判定（移動距離が非常に小さい場合は「タップされた」とみなしてすべての図形を90度回転）
                     const dxTouch = Math.abs(e.clientX - pointerDownPos.x);
                     const dyTouch = Math.abs(e.clientY - pointerDownPos.y);
                     if (level === 4 && dxTouch < 5 && dyTouch < 5) {
-                        currentRotation = (currentRotation + 45) % 360;
+                        currentRotation = (currentRotation + 90) % 360;
+                        const clamped = clampPosition(
+                            currentTransform.x,
+                            currentTransform.y,
+                            p.path,
+                            currentRotation
+                        );
+                        currentTransform.x = clamped.x;
+                        currentTransform.y = clamped.y;
+                        g.style.transition = 'transform 0.15s ease-out'; // 90度回転の動きを分かりやすく表示
                         g.setAttribute('transform', `translate(${currentTransform.x}, ${currentTransform.y}) rotate(${currentRotation}, ${cx}, ${cy})`);
                         return; // 回転した直後はスナップさせずに待機
                     }
